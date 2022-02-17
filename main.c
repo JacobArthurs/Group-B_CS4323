@@ -8,7 +8,8 @@
 
 #include "player.c"
 
-int main(){
+int main(){//for all instantces for printf, we need to change them to sendto,
+//and all instances of scanf to recvfrom
     int userSelection;
     printf("1. Single-Player\n");
     printf("2. Multi-Player\n");
@@ -23,6 +24,7 @@ int main(){
     }
     else if(userSelection == 3){
         printf("Thank you for playing!");
-        exit(0);
+        exit(0);//need to replace exit with a call to terminate the
+        //specific socket that this client is addressed to, and only that one.
     }
 }
