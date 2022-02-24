@@ -10,14 +10,18 @@
 #include <stdbool.h>
 
 struct user {
-        char randomAlphabets[7];
-        char startingChar;
-        char currentWord[7];
-        int score;
-        int opponentScore;
-        int numFoundWords;
-        int numNewWords;
-        bool won;
+    char randomAlphabets[7];
+    char wordList[20][100]; 
+    char currentWord[7];
+    int score;
+    int opponentScore;
+    int numFoundWords;
+    int numNewWords;
+    _Bool won;
+    char firstName[20];
+    char lastName[20];
+    char country[20];
+    int skipCount;
 };
 
 //1=singleplayer, 2=multiplayer
@@ -25,7 +29,6 @@ void player(int singlePlayer){
     //Ignore all initialization of struct, it is a placeholder. Struct data will be obtained from server.
     struct user user1;
     strcpy(user1.randomAlphabets, "HLEEDA");
-    user1.startingChar = 'h';
     user1.numFoundWords = 7;
     user1.numNewWords = 10;
     user1.won = true;
