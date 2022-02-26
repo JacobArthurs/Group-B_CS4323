@@ -1,7 +1,7 @@
 #include "player.c"
 #include "client.c"
 //recvfrom chat_server the input data and the pid of the client who sent the input
-int singleplayerGame(struct user plr){
+void singleplayerGame(struct user plr){
     int s;
     server();//randomly selects one of the input files
 
@@ -42,7 +42,7 @@ int singleplayerGame(struct user plr){
             plr[0].skipCount = plr[0].skipCount + 1;
         }
     }
-        scoreboard(plr[0]);
+    scoreboard(plr[0]);
 }
 
 
