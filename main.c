@@ -8,13 +8,9 @@
 #include <string.h>
 
 #include "player.c"
+#include "scoreboard.c"
 
-int main(){//for all instantces for printf, we need to change them to sendto,
-//and all instances of scanf to recvfrom
-
-//Why? Can't we just print to users screen and get information submited from user within main.c and player.c? 
-//We can just add said information to the struct to be sent back and forth between the server.
-//Also, please talk on groupme if you think there needs to be changes. I didn't see this for a long time. - Jacob
+int main(){
     int userSelection;
     printf("1. Single-Player\n");
     printf("2. Multi-Player\n");
@@ -22,18 +18,22 @@ int main(){//for all instantces for printf, we need to change them to sendto,
     printf("Please enter a selection: ");
     scanf("%d", &userSelection);
     if(userSelection == 1){
-        player(1);
+        //Create placeholder struct from player, this line will be replaced with a call to 
+        //game.c which should modify or return a struct
+        struct user currentUser = player(1);
+        singlePlayerScoreboard(currentUser);
     }
     else if(userSelection == 2){
-        player(2);
+        //Create placeholder struct from player, this line will be replaced with a call to 
+        //game.c which should modify or return a struct
+        struct user currentUser = player(2);
+        multiPlayerScoreboard(currentUser);
     }
     else if(userSelection == 3){
+        //No need to close socket at this point. After a round has been played, chat_client.c 
+        //already closes the socket after the game is finished. If the user selects to play again, 
+        //a new socket will be made with chat_client.c
         printf("Thank you for playing!");
-        exit(0);//need to replace exit with a call to terminate the
-        //specific socket that this client is addressed to, and only that one.
-
-        //This main.c file is a local players instance of the game. Exiting this instance of the game will not effect
-        //the other players instance of the game. Whenever the local player is in this main menu a socket shouldn't even 
-        //be opened yet because the game hasn't been started yet. - Jacob
+        exit(0);
     }
 }

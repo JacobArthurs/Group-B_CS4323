@@ -25,7 +25,7 @@ struct user {
 };
 
 //1=singleplayer, 2=multiplayer
-void player(int singlePlayer){
+struct user player(int singlePlayer){
     //Ignore all initialization of struct, it is a placeholder. Struct data will be obtained from server.
     struct user user1;
     strcpy(user1.randomAlphabets, "HLEEDA");
@@ -33,10 +33,6 @@ void player(int singlePlayer){
     user1.numNewWords = 10;
     user1.won = true;
     user1.score = 15;
-
-    char firstName[20];
-    char lastName[20];
-    char country[20];
     if(singlePlayer == 1){
         //Communicate with server that this is singleplayer
     }
@@ -50,7 +46,7 @@ void player(int singlePlayer){
         printf("Please enter your first name: ");
         do{
             if( kbhit() ){
-                scanf("%s", firstName);
+                scanf("%s", user1.firstName);
                 break;
             }
             clock_t difference = clock() - before;
@@ -68,7 +64,7 @@ void player(int singlePlayer){
         printf("Please enter your last name: ");
         do{
             if( kbhit() ){
-                scanf("%s", lastName);
+                scanf("%s", user1.lastName);
                 break;
             }
             clock_t difference = clock() - before;
@@ -86,7 +82,7 @@ void player(int singlePlayer){
         printf("Please enter your country: ");
         do{
             if( kbhit() ){
-                scanf("%s", country);
+                scanf("%s", user1.country);
                 break;
             }
             clock_t difference = clock() - before;
@@ -129,37 +125,11 @@ void player(int singlePlayer){
     //Get user information if player won, was playing singleplayer, and if they scored high enough to be added to scoreboard
     if(singlePlayer == 1){
         printf("Please enter your first name: ");
-        scanf("%s",firstName);
+        scanf("%s",user1.firstName);
         printf("Please enter your last name: ");
-        scanf("%s", lastName);
+        scanf("%s", user1.lastName);
         printf("Please enter your country: ");
-        scanf("%s", country);
-        //Open file, append
-        FILE *fptr = fopen("singlePlayer.txt", "a");
-        fprintf(fptr, "\n");
-        //Add first name, last name, country, score, number of found words, and number of added words to dictionary to scoreboard
-        fprintf(fptr, "%-30s%-30s%-30s%-30d%-40d%d", firstName, lastName, country, user1.score, user1.numFoundWords, user1.numNewWords);
-        //Flush and close file
-        fflush(fptr);
-        fclose(fptr);
+        scanf("%s", user1.country);
     }
-    
-    //Get user information if they scored high enough to be added to scoreboard
-    else if(singlePlayer == 2){
-        char didWin[4];
-        if(user1.won){
-            strcpy(didWin, "Win");
-        }
-        else{
-            strcpy(didWin, "Lose");
-        }
-        //Open file, append
-        FILE *fptr = fopen("multiPlayer.txt", "a");
-        fprintf(fptr, "\n");
-        //Add first name, last name, country, score, didWin, number of found words, and number of added words to dictionary to scoreboard
-        fprintf(fptr, "%-30s%-30s%-30s%-30d%-30s%-40d%d", firstName, lastName, country, user1.score, didWin, user1.numFoundWords, user1.numNewWords);
-        //Flush and close file
-        fflush(fptr);
-        fclose(fptr);
-    }
+    return user1;
 }
