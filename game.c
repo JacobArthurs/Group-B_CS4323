@@ -1,3 +1,8 @@
+//GroupB
+//Joshua Hardin
+//joshua.hardin@okstate.edu
+//02/27/2022
+
 #include "player.c"
 #include "client.c"
 //recvfrom chat_server the input data and the pid of the client who sent the input
