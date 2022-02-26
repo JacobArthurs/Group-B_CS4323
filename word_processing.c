@@ -267,11 +267,3 @@ void start_game(void) {
     }
 }
 
-
-// TODO:
-// add a way to check whether the recent input has been used in the past
-// reference the point system for every successful word search
-// find a way to use binary search through a file
-// change format to while loop to keep game going
-// incorporate player signaling from player.c
-// add mechanism for passing a on a turn
