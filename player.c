@@ -22,6 +22,7 @@ struct user {
     char lastName[20];
     char country[20];
     int skipCount;
+    int clientpid;
 };
 
 //1=singleplayer, 2=multiplayer
