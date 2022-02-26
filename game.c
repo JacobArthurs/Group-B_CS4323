@@ -10,44 +10,44 @@ void singleplayerGame(struct user plr){
     int s;
     server();//randomly selects one of the input files
 
-    while(plr[0].skipCount < 3){//client always goes first in singleplayer
-        client(plr[0]);//will be changed to only print out the turn player menu
+    while(plr.skipCount < 3){//client always goes first in singleplayer
+        client(plr);//will be changed to only print out the turn player menu
         while(true){//need to adjust this so that it only waits 4 minutes
             recvfrom(s, data, sizeof(data), 5555, sizeof(5555));//not sure if this is correct
             //that said, this more or less is to recieve data from chat_server.c
             recvfrom(s, pids, sizeof(pids), 5555, sizeof(5555));
             //we need a pid of the client who input the data
-            if (pids == plr[0].clientpid){
+            if (pids == plr.clientpid){
                 //send data to word processing to be checked if valid or not.
                 //^needs to be added
                 if(valid){
                     //update score, numFoundWords, numNewWords, currentWord, etc.
                     //^needs to be added
-                    plr[0].skipCount = 0;
+                    plr.skipCount = 0;
                 }
                 else{
                     //update score
                     //^needs to be added
-                    plr[0].skipCount = plr[0].skipCount + 1;
+                    plr.skipCount = plr.skipCount + 1;
                 }
                 break;
             }
         }
-        if(plr[0].skipCount == 3){
+        if(plr.skipCount == 3){
             break;
         }
-        gameOpponent(plr[0])//need to write gameOpponent
+        gameOpponent(plr)//need to write gameOpponent
         if(valid){
             //update opponentScore, wordlist, etc.
             //^needs to be added
-            plr[0].skipCount = 0;
+            plr.skipCount = 0;
         }
         else{
             //bot passed
-            plr[0].skipCount = plr[0].skipCount + 1;
+            plr.skipCount = plr.skipCount + 1;
         }
     }
-    scoreboard(plr[0]);
+    scoreboard(plr);
 }
 
 
