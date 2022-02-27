@@ -31,8 +31,8 @@ struct user player(struct user currentPlayer){
     strcpy(currentPlayer.randomAlphabets, "HLEEDA");
     currentPlayer.numFoundWords = 7;
     currentPlayer.numNewWords = 10;
-    currentPlayer.won = false;
-    currentPlayer.score = 15;
+    currentPlayer.won = true;
+    currentPlayer.score = 14;
 
     //Get user information
     //Get first name, max 2 mins wait time

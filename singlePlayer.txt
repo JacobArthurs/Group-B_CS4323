@@ -1,7 +1,12 @@
 FirstName                     LastName                      Country                       Score                         Number of Words Found                   Number of Words Added to Dictionary
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Jacob                         Arthurs                       USA                           15                            7                                       10
-Jacob                         Test                          US                            15                            7                                       10
-Jacob                         Test2                         US                            15                            7                                       10
-Jacob                         Test3                         US                            15                            7                                       10
+Jacob                         Arthurs                       USA                           28                            7                                       10
+Jacob                         Test                          US                            21                            7                                       10
+Jacob                         Test2                         US                            19                            7                                       10
+Jacob                         Test3                         US                            17                            7                                       10
 Jacob                         Test3                         USA                           15                            7                                       10
+Jacob                         Arthurs                       USA                           12                            7                                       10
+Jacob                         Test                          US                            9                             7                                       10
+Jacob                         Test2                         US                            9                             7                                       10
+Jacob                         Test3                         US                            7                             7                                       10
+Jacob                         Test3                         USA                           4                             7                                       10

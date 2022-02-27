@@ -1,5 +1,12 @@
 FirstName                     LastName                      Country                       Score                         Win/Lose                      Number of Words Found                   Number of Words Added to Dictionary
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Jacob                         Arthurs                       USA                           15                            Win                           7                                       10
-Jacob                         Test                          US                            15                            Win                           7                                       10
-Jacob                         Arthurs                       USATEST                       15                            Win                           7                                       10
+Jacob                         Arthurs                       USA                           28                            Win                           7                                       10
+Jacob                         Test                          US                            21                            Win                           7                                       10
+Jacob                         Arthurs                       USATEST                       19                            Win                           7                                       10
+Jacob                         Test                          USA                           15                            Lose                          7                                       10
+Jacob                         Arthurs                       USA                           12                            Win                           7                                       10
+Jacob                         Test                          US                            10                            Win                           7                                       10
+Jacob                         Arthurs                       USATEST                       8                             Win                           7                                       10
+Jacob                         Test                          USA                           7                             Lose                          7                                       10
+Jacob                         Arthurs                       USA                           7                             Win                           7                                       10
+Jacob                         Test                          US                            4                             Win                           7                                       10
