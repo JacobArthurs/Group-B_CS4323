@@ -17,12 +17,14 @@ typedef struct alphabet {
     char    letters[100];                                       // store alphabet for continuous printing
 } alphabet;
 
-typedef struct scoreCard {                                                     // keep track of how many times a player has passed
-    int score_1;
-    int passes_1;
+typedef struct scoreCard {
+    int score_1;                                              // keep track of player scores -- scores will not go below zero based on register_points()
+    int passes_1;                                             // keep track of how many times a player has passed
+    int badInputs_1;                                          // keep track of how many times a player has input an invalid word, 3 = 1 pass
     
     int score_2;
     int passes_2;
+    int badInputs_2;
 } scoreCard;
 
 void set_alphabet(struct alphabet *alpha, char input[]) {                          // Uses first line of input file as recurring alphabet print out
@@ -77,7 +79,6 @@ void find_valid_words(struct wordList *list, FILE *pointer, char alphabet[], str
             fgets(buffer_in, 100, pointer);
             currIndex++;
         }
-        
         list -> bonusIndex = currIndex;                                       // Set index where bonus points begin
     }
     else {                                                                  // if reading from the dictionary file
@@ -94,6 +95,17 @@ void find_valid_words(struct wordList *list, FILE *pointer, char alphabet[], str
     }
 }
 
+_Bool is_bonus_word(char input[], struct wordList *validWords) {                        // returns true if the word was found in the dictionary for bonus points
+    char currWord[100];
+    for (int i = validWords->bonusIndex ; i < sizeof(validWords) ; ++i) {
+        strcpy(currWord, validWords->words[i]);
+        if (strncmp(currWord, input, strlen(currWord)) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void print_word_list(struct wordList *list) {                                        // print all previously used words to the console
     int i;
     printf("Previously used words:\n");
@@ -102,17 +114,17 @@ void print_word_list(struct wordList *list) {                                   
     }
 }
 
-_Bool hasPassed(char input[], struct scoreCard *passes, int player) {               // check if user is trying to pass on this turn
+_Bool hasPassed(char input[], struct scoreCard *passes, _Bool gameTurn) {               // check if user is trying to pass on this turn
     int i;
-    for (i = 0 ; i < strlen(input) ; ++i) {                                  // check all letters in input
+    for (i = 0 ; i < strlen(input) ; ++i) {                                   // check all letters in input
         if (input[i] >= 'a' && input[i] <='z') {
-            input[i] -= 32;                                                // convert all letters to upper case
+            input[i] -= 32;                                                 // convert all letters to upper case
         }
-        if (strncmp(input, "PASS", strlen(input)) == 0) {
-            if (player == 0) { passes->passes_1++; }
-            else { passes->passes_2++; }
-            return true;
-        }
+    }
+    if (strncmp(input, "PASS", strlen(input)) == 0) {
+        if (!gameTurn) { passes->passes_1++; }
+        else { passes->passes_2++; }
+        return true;
     }
     return false;
 }
@@ -130,49 +142,118 @@ _Bool is_postfix(char input[], char prevWord[]) {                               
     return false;
 }
 
-_Bool is_first_run(struct wordList *usedWords) {
+_Bool is_first_run(struct wordList *usedWords) {                                         // confirms if this is the first run of the game
     if (usedWords -> index == 0) {
         return true;
     }
     return false;
 }
 
+_Bool is_valid_start(char input[], char randChar) {                                     // checks the first word in the game for valid starting letter
+    if (input[0] == randChar) { return true; }
+    return false;
+}
+
 // Cofirms whether a word is a valid next word for the game
-_Bool is_word_valid(char input[], char alphabet[], struct wordList *usedWords, struct wordList *validWords) {
+_Bool is_word_valid(char input[], char alphabet[], struct wordList *usedWords, struct wordList *validWords, _Bool userCharPick, char randChar) {
     char prevWord[100];
     strcpy(prevWord, usedWords->words[usedWords->index - 1]);
 
     // Return true if:
     //                 The word contains the right kind of letters
-    //                 The word has been used before
+    //                 The word has been not used before
     //                 The word is a postfix in some way of the previously used word
+    //                 Account for whether this turn allows player to choose random characters
     
-    if (check_letters(input, alphabet) && !has_been_used(input, usedWords) && is_first_run(usedWords)) {
+    if (check_letters(input, alphabet) && !has_been_used(input, usedWords) && is_first_run(usedWords) && !userCharPick
+        && is_valid_start(input, randChar)) {
         return true;
     }
     else if (check_letters(input, alphabet) && !has_been_used(input, usedWords)
-           && is_postfix(input, prevWord)) {
+           && is_postfix(input, prevWord) && !userCharPick) {
+        return true;
+    }
+    else if (check_letters(input, alphabet) && !has_been_used(input, usedWords) && userCharPick) {              // if both players passed
         return true;
     }
     return false;
 }
 
-void register_points(struct scoreCard *card, int playerNum, char input[]) {
+void register_points(struct scoreCard *card, int playerNum, char input[], struct wordList *validWords) {                // register points in score card
     int wordLen = (int) strlen(input);
     
     if (playerNum == 1) {
-        if (wordLen == 3 || wordLen == 4) { card->score_1 += 1; }
-        else if (wordLen == 5) { card->score_1 += 2; }
-        else if (wordLen == 6) { card->score_1 += 3; }
-        else if (wordLen == 7) { card->score_1 += 5; }
-        else if (wordLen >= 8) { card->score_1 += 11; }
+        if (strncmp(input, "invalid", strlen(input)) == 0) {
+            card->score_1 = (card->score_1 - 1 < 0) ? 0: card->score_1 - 1; }
+        else if (strncmp(input, "used", strlen(input)) == 0) {
+            card->score_1 = (card->score_1 - 2 < 0 || card->score_1 - 1 <= 0) ? 0: card->score_1 - 2; }
+        else if (wordLen == 3 || wordLen == 4) {
+            card->score_1 +=  (is_bonus_word(input, validWords)) ? 6: 1;}
+        else if (wordLen == 5) {
+            card->score_1 +=  (is_bonus_word(input, validWords)) ? 7: 2;}
+        else if (wordLen == 6) {
+            card->score_1 +=  (is_bonus_word(input, validWords)) ? 8: 3;}
+        else if (wordLen == 7) {
+            card->score_1 +=  (is_bonus_word(input, validWords)) ? 10: 5;}
+        else if (wordLen >= 8) {
+            card->score_1 +=  (is_bonus_word(input, validWords)) ? 16: 11;}
     }
-    else {
-        if (wordLen == 3 || wordLen == 4) { card->score_2 += 1; }
-        else if (wordLen == 5) { card->score_2 += 2; }
-        else if (wordLen == 6) { card->score_2 += 3; }
-        else if (wordLen == 7) { card->score_2 += 5; }
-        else if (wordLen >= 8) { card->score_2 += 11; }
+    else if (playerNum == 2) {
+        if (strncmp(input, "invalid", strlen(input)) == 0) {
+            card->score_2 = (card->score_2 - 1 < 0) ? 0: card->score_2 - 1; }
+        else if (strncmp(input, "used", strlen(input)) == 0) {
+            card->score_2 = (card->score_2 - 2 < 0 || card->score_2 - 1 <= 0) ? 0: card->score_2 - 2; }
+        else if (wordLen == 3 || wordLen == 4) {
+            card->score_2 +=  (is_bonus_word(input, validWords)) ? 6: 1;}
+        else if (wordLen == 5) {
+            card->score_2 +=  (is_bonus_word(input, validWords)) ? 7: 2;}
+        else if (wordLen == 6) {
+            card->score_2 +=  (is_bonus_word(input, validWords)) ? 8: 3;}
+        else if (wordLen == 7) {
+            card->score_2 +=  (is_bonus_word(input, validWords)) ? 10: 5;}
+        else if (wordLen >= 8) {
+            card->score_2 +=  (is_bonus_word(input, validWords)) ? 16: 11;}
+    }
+}
+
+void print_game_status(struct wordList *usedWords, _Bool gameTurn, _Bool allowCharPick,                     // prints the current game status based on hw guidlines
+                struct scoreCard scoreCard, char firstLine[]) {
+    char nextChar;
+    char prevWord[100];
+    
+    print_word_list(usedWords);
+    printf("Player 1 Score: %d\n", scoreCard.score_1);
+    printf("Player 2 Score: %d\n", scoreCard.score_2);
+    
+    if (!gameTurn && !allowCharPick && scoreCard.badInputs_1 != 3) {
+        strcpy(prevWord, usedWords->words[usedWords->index-1]);
+        nextChar = prevWord[strlen(prevWord)-1];
+        printf("Player 1 - Enter a word using char %c:   Alphabet: %s", nextChar, firstLine);
+    }
+    else if (gameTurn && !allowCharPick && scoreCard.badInputs_2 != 3) {
+        strcpy(prevWord, usedWords->words[usedWords->index-1]);
+        nextChar = prevWord[strlen(prevWord)-1];
+        printf("Player 2 - Enter a word using char %c:   Alphabet: %s", nextChar, firstLine);
+    }
+    else if (!gameTurn && allowCharPick) {                                      // if both players have passed consecutively
+        printf("Player 1 - Enter a word using any char in the alphabet: %s", firstLine);
+        gameTurn = true;
+    }
+    else if (gameTurn && allowCharPick) {                                       // if both players have passed consecutively
+        printf("Player 2 - Enter a word using any char in the alphabet: %s", firstLine);
+        gameTurn = false;
+    }
+    else if (scoreCard.badInputs_1 == 3) {                                          // if first player has three bad inputs
+        hasPassed("PASS", &scoreCard, gameTurn);                                   // Register as a pass for respective player
+        printf("Player 2 - Enter a word using any char in the alphabet: %s", firstLine);
+        gameTurn = true;                                                       // change the current turn
+        allowCharPick = true;                                                   // allow next player to pick a character randomly
+    }
+    else if (scoreCard.badInputs_2 == 3) {                                          // if second player has three bad inputs
+        hasPassed("PASS", &scoreCard, gameTurn);                                   // Register as a pass for respective player
+        printf("Player 1 - Enter a word using any char in the alphabet: %s", firstLine);
+        gameTurn = false;                                                       // change  the current turn
+        allowCharPick = true;                                                   // allow next player to pick a character randomly
     }
 }
 
@@ -181,8 +262,12 @@ void start_game(void) {
     
     char  user_input[100];                                 // store user's words in
     char  firstLine[100];                                  // store the alphabet for every file
+    int   randInt;
     _Bool  gameTurn = false;                                // used to switch from one player to another
     _Bool  isGameOver = false;
+    char  nextChar;
+    _Bool consecPasses = false;
+    _Bool allowCharPick = false;                                  // denotes whether players get to choose a random character
     
     wordList usedWords = {.words = { {} } };                       // Instantiate a list of words struct to use in this game run
     wordList validWords = {.words = { {} } };                      // create list of all valid words in input file and dictionary
@@ -209,61 +294,78 @@ void start_game(void) {
     find_valid_words(&validWords, dictFPtr, firstLine, &alpha, false);             // get all possible words from the dictionary file
     fclose(dictFPtr);
     
-    print_word_list(&validWords);
+    // print_word_list(&validWords);                                                                            // use to confirm all possible  words registered in validWords
     
-// -------------------------------------------------- Start the execution of the game ---------------------------------------------------------------------------------------------
+// -------------------------------------------------- Obtain inputs from the user ---------------------------------------------------------------------------------------------
     
-    printf("Type a word in the following alphabet: %s\n", alpha.letters);
+    randInt = rand() % (strlen(firstLine) - 3);
+    nextChar = firstLine[randInt];
+    printf("Player 1 - Enter a word using char: %c   Alphabet: %s", nextChar, alpha.letters);
     scanf("%s", user_input);
     
-    int iterations = 0;                                                            // TEMPORARY METHOD OF ENDING WHILE STATEMENT
-    while (iterations < 8) {
+    while (!isGameOver) {
         
-        if (hasPassed(user_input, &scoreCard, 0)) {                                   // check if user is passing this turn
-            printf("Passed. \n");
+        if (hasPassed(user_input, &scoreCard, gameTurn)) {                            // check if user is passing this turn
             
-            if (scoreCard.passes_1 >= 3) {
-                printf("The game is over. \n");
+            if (scoreCard.passes_1 == 2 && scoreCard.passes_2 == 2) {                    // if we have had two consecutive passes from both players
+                printf("The game is over. \n");                                             // end the game
+                isGameOver = true;
                 break;
             }
+            if (scoreCard.passes_1 == 1 && scoreCard.passes_2 == 1) {
+                allowCharPick = true;                                               // if both players have passed, allow next player to pick a character
+            }
             
-            printf("Enter another word: ");
-            scanf("%s", user_input);
-            continue;
+            consecPasses = true;                                                    // note the fact that one player has started passing
+            gameTurn = !gameTurn;
         }
-        
-        if (is_word_valid(user_input, firstLine, &usedWords, &validWords)) {
-            // printf("This was a valid word\n");
-            
+        else if (is_word_valid(user_input, firstLine, &usedWords, &validWords, allowCharPick, nextChar)) {
             if (!gameTurn) {
-                register_points(&scoreCard, 1, user_input);
+                register_points(&scoreCard, 1, user_input, &validWords);                             // register scores for player one
                 gameTurn = true;
+                consecPasses = false;
+                allowCharPick = false;
+                scoreCard.passes_1 = 0;                                                        // reset the pass count
+                scoreCard.badInputs_1 += 0;                                                     // reset the invalid input count
             }
-            
             else {
-                register_points(&scoreCard, 2, user_input);
+                register_points(&scoreCard, 2, user_input, &validWords);                             // register scores for player two
                 gameTurn = false;
+                consecPasses = false;
+                allowCharPick = false;
+                scoreCard.passes_1 = 0;                                              // reset the pass count
+                scoreCard.badInputs_2 += 0;                                           // reset the invalid input count
             }
-            register_word(user_input, &usedWords);                                     // register word in usedWords
+            register_word(user_input, &usedWords);                                     // register word in usedWords for this game
         }
-        else {
+        else if (!has_been_used(user_input, &usedWords)) {                               // deduct points for invalid words
             printf("Invalid word. \n");
+            if (!gameTurn) {
+                register_points(&scoreCard, 1, "invalid", &validWords);
+                scoreCard.badInputs_1 += 1;
+            }
+            else {
+                register_points(&scoreCard, 2, "invalid", &validWords);
+                scoreCard.badInputs_2 += 1;
+            }
+        }
+        else if (has_been_used(user_input, &usedWords)) {                                // deduct points for words already used
+            printf("This word has already been used. \n");
+            if (!gameTurn) {
+                register_points(&scoreCard, 1, "used", &validWords);
+                scoreCard.badInputs_1 += 1;                                            // register the bad input from user one
+            }
+            else {
+                register_points(&scoreCard, 2, "used", &validWords);
+                scoreCard.badInputs_2 += 1;                                            // register bad input from user two
+            }
         }
         
-        print_word_list(&usedWords);
-        printf("Player 1 Score: %d\n", scoreCard.score_1);
-        printf("Player 2 Score: %d\n", scoreCard.score_2);
-        
-        if (!gameTurn) {
-            printf("Player 1 - Enter another word: ");
-        }
-        else {
-            printf("Player 2 - Enter another word: ");
-        }
+        print_game_status(&usedWords, gameTurn, allowCharPick, scoreCard, firstLine);    // print the current status of the game
         
         scanf("%s", user_input);
         
-        ++iterations;
     }
+
 }
 
