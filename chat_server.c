@@ -210,6 +210,7 @@ int main(int argc , char *argv[])
                         int x;
                         int y;
                         int z;
+                        struct wordList validWords;
                         
                         server();
                         x = 0;//needs to be replaced with a randomized method
