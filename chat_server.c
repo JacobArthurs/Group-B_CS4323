@@ -140,6 +140,7 @@ int main(int argc , char *argv[])
             if (fork2 > 0){
                 if(newPlr.gametype == 1){
                     struct user plr == newPlr;
+
                     server();//randomly selects one of the input files
                     struct wordList validWords;
                     find_valid_words();//probably want to use the plr.randomAlphabets to be the valid words and set validWords
@@ -191,7 +192,26 @@ int main(int argc , char *argv[])
                 }
             }
             else if(fork2 == 0){
-                if(new)
+                if(newPlr.gametype == 2){
+                    struct user plr[3];
+                    fork3 = fork();
+                    if(plr[0].gametype != 2){
+                        plr[0] = newPlr;
+                    }
+                    else if(plr[1].gametype != 2){
+                        plr[1] = newPlr;
+                    }
+                    else{
+                        plr[2] = newPlr;
+                    }
+                    if(fork3 > 0){
+                        
+                        while(true){
+                            // we need to have a waitroom for the players
+                        }
+                    }
+
+                }
             }
         }
         
