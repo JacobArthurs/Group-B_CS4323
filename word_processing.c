@@ -238,45 +238,64 @@ void register_points(struct plr player, char input[], struct wordList *validWord
     }
 }
 
-void print_game_status(struct wordList *usedWords, _Bool gameTurn, _Bool allowCharPick,                     // prints the current game status based on hw guidlines
-                struct scoreCard scoreCard, char firstLine[]) {
+// DO NOT DELETE
+//void print_game_status(struct wordList *usedWords, _Bool gameTurn, _Bool allowCharPick,                     // prints the current game status based on hw guidlines
+//                struct scoreCard scoreCard, char firstLine[]) {
+//    char nextChar;
+//    char prevWord[100];
+//
+//    print_word_list(usedWords);
+//    printf("Player 1 Score: %d\n", scoreCard.score_1);
+//    printf("Player 2 Score: %d\n", scoreCard.score_2);
+//
+//    if (!gameTurn && !allowCharPick && scoreCard.badInputs_1 != 3) {
+//        strcpy(prevWord, usedWords->words[usedWords->index-1]);
+//        nextChar = prevWord[strlen(prevWord)-1];
+//        printf("Player 1 - Enter a word using char %c:   Alphabet: %s", nextChar, firstLine);
+//    }
+//    else if (gameTurn && !allowCharPick && scoreCard.badInputs_2 != 3) {
+//        strcpy(prevWord, usedWords->words[usedWords->index-1]);
+//        nextChar = prevWord[strlen(prevWord)-1];
+//        printf("Player 2 - Enter a word using char %c:   Alphabet: %s", nextChar, firstLine);
+//    }
+//    else if (!gameTurn && allowCharPick) {                                      // if both players have passed consecutively
+//        printf("Player 1 - Enter a word using any char in the alphabet: %s", firstLine);
+//        gameTurn = true;
+//    }
+//    else if (gameTurn && allowCharPick) {                                       // if both players have passed consecutively
+//        printf("Player 2 - Enter a word using any char in the alphabet: %s", firstLine);
+//        gameTurn = false;
+//    }
+//    else if (scoreCard.badInputs_1 == 3) {                                          // if first player has three bad inputs
+//        hasPassed("PASS", &scoreCard, gameTurn);                                   // Register as a pass for respective player
+//        printf("Player 2 - Enter a word using any char in the alphabet: %s", firstLine);
+//        gameTurn = true;                                                       // change the current turn
+//        allowCharPick = true;                                                   // allow next player to pick a character randomly
+//    }
+//    else if (scoreCard.badInputs_2 == 3) {                                          // if second player has three bad inputs
+//        hasPassed("PASS", &scoreCard, gameTurn);                                   // Register as a pass for respective player
+//        printf("Player 1 - Enter a word using any char in the alphabet: %s", firstLine);
+//        gameTurn = false;                                                       // change  the current turn
+//        allowCharPick = true;                                                   // allow next player to pick a character randomly
+//    }
+//}
+
+void print_game_status(struct wordList *usedWords, struct plr player , char firstLine[]) {
     char nextChar;
     char prevWord[100];
+
+    print_word_list(player.usedWords);
     
-    print_word_list(usedWords);
-    printf("Player 1 Score: %d\n", scoreCard.score_1);
-    printf("Player 2 Score: %d\n", scoreCard.score_2);
-    
-    if (!gameTurn && !allowCharPick && scoreCard.badInputs_1 != 3) {
-        strcpy(prevWord, usedWords->words[usedWords->index-1]);
-        nextChar = prevWord[strlen(prevWord)-1];
-        printf("Player 1 - Enter a word using char %c:   Alphabet: %s", nextChar, firstLine);
-    }
-    else if (gameTurn && !allowCharPick && scoreCard.badInputs_2 != 3) {
-        strcpy(prevWord, usedWords->words[usedWords->index-1]);
-        nextChar = prevWord[strlen(prevWord)-1];
-        printf("Player 2 - Enter a word using char %c:   Alphabet: %s", nextChar, firstLine);
-    }
-    else if (!gameTurn && allowCharPick) {                                      // if both players have passed consecutively
-        printf("Player 1 - Enter a word using any char in the alphabet: %s", firstLine);
-        gameTurn = true;
-    }
-    else if (gameTurn && allowCharPick) {                                       // if both players have passed consecutively
-        printf("Player 2 - Enter a word using any char in the alphabet: %s", firstLine);
-        gameTurn = false;
-    }
-    else if (scoreCard.badInputs_1 == 3) {                                          // if first player has three bad inputs
-        hasPassed("PASS", &scoreCard, gameTurn);                                   // Register as a pass for respective player
-        printf("Player 2 - Enter a word using any char in the alphabet: %s", firstLine);
-        gameTurn = true;                                                       // change the current turn
-        allowCharPick = true;                                                   // allow next player to pick a character randomly
-    }
-    else if (scoreCard.badInputs_2 == 3) {                                          // if second player has three bad inputs
-        hasPassed("PASS", &scoreCard, gameTurn);                                   // Register as a pass for respective player
-        printf("Player 1 - Enter a word using any char in the alphabet: %s", firstLine);
-        gameTurn = false;                                                       // change  the current turn
-        allowCharPick = true;                                                   // allow next player to pick a character randomly
-    }
+    printf("Usable Letters: %s\n",player.randomAlphabets);
+    printf("Your Current Score: %d\n",player.score);
+    printf("Your Opponents Current Score: %d\n",player.opponentScore);
+    print_word_list(player.usedWords);
+
+    printf("Starting Character of the next word: %s\n",player.currentWord[strlen(currentWord)-1]);
+    printf("Please input one appropraite word: \n");
+
+    // TODO:
+    // Combine with game logic to print out differet last set of statements when the next player gets to choose the char
 }
 
 

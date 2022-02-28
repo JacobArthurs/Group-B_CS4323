@@ -150,7 +150,7 @@ int main(int argc , char *argv[])
 
                     //to be the list of valid words
                     while(plr.skipCount < 3){//client always goes first in singleplayer
-                        print_game_status(plr);//will be changed to only print out the turn player menu
+                        print_game_status(&plr.usedWords, plr, plr.randomAlphabets);//will be changed to only print out the turn player menu
                         while(true){//need to adjust this so that it only waits 4 minutes
                             //pipleined data is looked at here
                             //we need a pid of the client who input the data
@@ -165,7 +165,8 @@ int main(int argc , char *argv[])
                                     plr.validWords = 0;
                                     break;
                                 }
-                                else if(is_word_valid()){
+                                else if(is_word_valid(plr.currentWord, plr.randomAlphabets, plr.wordList,
+                                        &validWords, false, plr.currentWord[strlen(plr.currentWord)-1])){
                                     register_points(plr, plr.currentWord, validWords);
                                     register_word(plr.wordList);
                                     plr.currentWord = ;//input
@@ -222,7 +223,7 @@ int main(int argc , char *argv[])
                         y = 1;
 
                         while(plr[0].skipCount < 3){
-                            print_game_status(plr[x]);
+                            print_game_status(&plr.usedWords, plr, plr.randomAlphabets);
                             while(true){//top few lines are the same as in single player
                                 //pipelined data used here
                                 if(pids == plr[x].clientpid){
@@ -236,7 +237,8 @@ int main(int argc , char *argv[])
                                         plr.validWords = 0;
                                         break;
                                     }
-                                    else if(is_word_valid()){
+                                    else if(is_word_valid(plr.currentWord, plr.randomAlphabets, plr.wordList,
+                                            &validWords, false, plr.currentWord[strlen(plr.currentWord)-1])){
                                         register_points(plr, plr.currentWord, validWords);
                                         register_word(plr.wordList);
                                         plr.currentWord = ;//input
