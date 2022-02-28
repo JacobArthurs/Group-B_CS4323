@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void server(){
+void server(plr, validWords){
     //Allocate array to hold 10 file names
     char **fileNames = malloc(sizeof(int) * 11);
     //Allocate each cell in filesnames array to hold 21 characters
@@ -41,7 +41,10 @@ void server(){
     char *letters = malloc(7);
     fgets(letters, 7, fptr);
     
-    printf("Available letters: %s\n", letters);
+    find_valid_words(&validWords, fptr, letters, true);           // add all valid words in input file to validWords list
+    find_valid_words(&validWords, fptr_dict, letters, false);      // add all valid words in the dictionary file to validWords list
+    
+    // printf("Available letters: %s\n", letters);
 
     //print random beginning letter to slected player
     randomIndex = rand() % 8;

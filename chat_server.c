@@ -146,7 +146,7 @@ int main(int argc , char *argv[])
                 if(newPlr.gametype == 1){
                     struct user plr == newPlr;
                     struct wordList validWords;
-                    server();//randomly selects one of the input files
+                    server(&plr, &validWords);  // Randomly selects one of the input files & fill in all valid words to our list
 
                     //to be the list of valid words
                     while(plr.skipCount < 3){//client always goes first in singleplayer
