@@ -142,7 +142,7 @@ int main(int argc , char *argv[])
                     struct user plr == newPlr;
                     struct wordList validWords;
                     server();//randomly selects one of the input files
-                    
+
                     //to be the list of valid words
                     while(plr.skipCount < 3){//client always goes first in singleplayer
                         client(plr);//will be changed to only print out the turn player menu
@@ -206,8 +206,50 @@ int main(int argc , char *argv[])
                     if(fork3 > 0){
                         //we need a waitroom
                     }
+                    if(fork3 == 0){
+                        int x;
+                        int y;
+                        int z;
+                        
+                        server();
+                        x = 0;//needs to be replaced with a randomized method
+                        y = 1;
 
-
+                        while(plr[0].skipCount < 3){
+                            client(plr[x]);
+                            while(true){//top few lines are the same as in single player
+                                //pipelined data used here
+                                if(pids == plr[x].clientpid){
+                                    if (plr.validWords == 3){
+                                        plr.skipCount = plr.skipCount + 1;
+                                        plr.validWords = 0;
+                                        break;
+                                    }
+                                    else if(/*pass condition*/){
+                                        plr.skipCount = plr.skipCount + 1;
+                                        plr.validWords = 0;
+                                        break;
+                                    }
+                                    else if(is_word_valid()){
+                                        register_points();
+                                        register_word();
+                                        plr.currentWord = ;//input
+                                        plr.skipCount = 0;
+                                        plr.validWords = 0;
+                                    }
+                                    else{
+                                        register_points();
+                                        plr.validWords = plr.validWords + 1;
+                                    }
+                                } 
+                            }
+                            z = x;
+                            x = y;
+                            y = z;
+                        }
+                        scoreboard(plr[x]);
+                        scoreboard(plr[y]);
+                    }
                 }
             }
         }
