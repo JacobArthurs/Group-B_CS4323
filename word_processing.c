@@ -179,40 +179,62 @@ _Bool is_word_valid(char input[], char alphabet[], struct wordList *usedWords, s
     return false;
 }
 
-void register_points(struct scoreCard *card, int playerNum, char input[], struct wordList *validWords) {                // register points in score card
+// DO NOT DELETE
+//void register_points(struct scoreCard *card, int playerNum, char input[], struct wordList *validWords) {                // register points in score card
+//    int wordLen = (int) strlen(input);
+//
+//    if (playerNum == 1) {
+//        if (strncmp(input, "invalid", strlen(input)) == 0) {
+//            card->score_1 = (card->score_1 - 1 < 0) ? 0: card->score_1 - 1; }
+//        else if (strncmp(input, "used", strlen(input)) == 0) {
+//            card->score_1 = (card->score_1 - 2 < 0 || card->score_1 - 1 <= 0) ? 0: card->score_1 - 2; }
+//        else if (wordLen == 3 || wordLen == 4) {
+//            card->score_1 +=  (is_bonus_word(input, validWords)) ? 6: 1;}
+//        else if (wordLen == 5) {
+//            card->score_1 +=  (is_bonus_word(input, validWords)) ? 7: 2;}
+//        else if (wordLen == 6) {
+//            card->score_1 +=  (is_bonus_word(input, validWords)) ? 8: 3;}
+//        else if (wordLen == 7) {
+//            card->score_1 +=  (is_bonus_word(input, validWords)) ? 10: 5;}
+//        else if (wordLen >= 8) {
+//            card->score_1 +=  (is_bonus_word(input, validWords)) ? 16: 11;}
+//    }
+//    else if (playerNum == 2) {
+//        if (strncmp(input, "invalid", strlen(input)) == 0) {
+//            card->score_2 = (card->score_2 - 1 < 0) ? 0: card->score_2 - 1; }
+//        else if (strncmp(input, "used", strlen(input)) == 0) {
+//            card->score_2 = (card->score_2 - 2 < 0 || card->score_2 - 1 <= 0) ? 0: card->score_2 - 2; }
+//        else if (wordLen == 3 || wordLen == 4) {
+//            card->score_2 +=  (is_bonus_word(input, validWords)) ? 6: 1;}
+//        else if (wordLen == 5) {
+//            card->score_2 +=  (is_bonus_word(input, validWords)) ? 7: 2;}
+//        else if (wordLen == 6) {
+//            card->score_2 +=  (is_bonus_word(input, validWords)) ? 8: 3;}
+//        else if (wordLen == 7) {
+//            card->score_2 +=  (is_bonus_word(input, validWords)) ? 10: 5;}
+//        else if (wordLen >= 8) {
+//            card->score_2 +=  (is_bonus_word(input, validWords)) ? 16: 11;}
+//    }
+//}
+
+void register_points(struct plr player, char input[], struct wordList *validWords) {                // register points in score card
     int wordLen = (int) strlen(input);
     
     if (playerNum == 1) {
         if (strncmp(input, "invalid", strlen(input)) == 0) {
-            card->score_1 = (card->score_1 - 1 < 0) ? 0: card->score_1 - 1; }
+            card->score = (card->score - 1 < 0) ? 0: card->score - 1; }
         else if (strncmp(input, "used", strlen(input)) == 0) {
-            card->score_1 = (card->score_1 - 2 < 0 || card->score_1 - 1 <= 0) ? 0: card->score_1 - 2; }
+            card->score = (card->score - 2 < 0 || card->score - 1 <= 0) ? 0: card->score - 2; }
         else if (wordLen == 3 || wordLen == 4) {
-            card->score_1 +=  (is_bonus_word(input, validWords)) ? 6: 1;}
+            card->score +=  (is_bonus_word(input, validWords)) ? 6: 1;}
         else if (wordLen == 5) {
-            card->score_1 +=  (is_bonus_word(input, validWords)) ? 7: 2;}
+            card->score +=  (is_bonus_word(input, validWords)) ? 7: 2;}
         else if (wordLen == 6) {
-            card->score_1 +=  (is_bonus_word(input, validWords)) ? 8: 3;}
+            card->score +=  (is_bonus_word(input, validWords)) ? 8: 3;}
         else if (wordLen == 7) {
-            card->score_1 +=  (is_bonus_word(input, validWords)) ? 10: 5;}
+            card->score +=  (is_bonus_word(input, validWords)) ? 10: 5;}
         else if (wordLen >= 8) {
-            card->score_1 +=  (is_bonus_word(input, validWords)) ? 16: 11;}
-    }
-    else if (playerNum == 2) {
-        if (strncmp(input, "invalid", strlen(input)) == 0) {
-            card->score_2 = (card->score_2 - 1 < 0) ? 0: card->score_2 - 1; }
-        else if (strncmp(input, "used", strlen(input)) == 0) {
-            card->score_2 = (card->score_2 - 2 < 0 || card->score_2 - 1 <= 0) ? 0: card->score_2 - 2; }
-        else if (wordLen == 3 || wordLen == 4) {
-            card->score_2 +=  (is_bonus_word(input, validWords)) ? 6: 1;}
-        else if (wordLen == 5) {
-            card->score_2 +=  (is_bonus_word(input, validWords)) ? 7: 2;}
-        else if (wordLen == 6) {
-            card->score_2 +=  (is_bonus_word(input, validWords)) ? 8: 3;}
-        else if (wordLen == 7) {
-            card->score_2 +=  (is_bonus_word(input, validWords)) ? 10: 5;}
-        else if (wordLen >= 8) {
-            card->score_2 +=  (is_bonus_word(input, validWords)) ? 16: 11;}
+            card->score +=  (is_bonus_word(input, validWords)) ? 16: 11;}
     }
 }
 

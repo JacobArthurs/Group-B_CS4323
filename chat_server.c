@@ -166,14 +166,14 @@ int main(int argc , char *argv[])
                                     break;
                                 }
                                 else if(is_word_valid()){
-                                    register_points();
-                                    register_word();
+                                    register_points(plr, plr.currentWord, validWords);
+                                    register_word(plr.wordList);
                                     plr.currentWord = ;//input
                                     plr.skipCount = 0;
                                     plr.validWords = 0;
                                 }
                                 else{
-                                    register_points();
+                                    register_points(plr, plr.currentWord, validWords);
                                     plr.validWords = plr.validWords + 1;
                                 }
                             }
@@ -183,8 +183,8 @@ int main(int argc , char *argv[])
                         }
                         gameOpponent(plr)//need to write gameOpponent
                         if(valid){
-                            register_points();
-                            register_word();
+                            register_points(plr, plr.currentWord, validWords);
+                            register_word(plr.wordList);
                             plr.currentWord = ;//server answer
                             plr.skipCount = 0;
                         }
@@ -237,14 +237,14 @@ int main(int argc , char *argv[])
                                         break;
                                     }
                                     else if(is_word_valid()){
-                                        register_points();
-                                        register_word();
+                                        register_points(plr, plr.currentWord, validWords);
+                                        register_word(plr.wordList);
                                         plr.currentWord = ;//input
                                         plr.skipCount = 0;
                                         plr.validWords = 0;
                                     }
                                     else{
-                                        register_points();
+                                        register_points(plr, plr.currentWord, validWords);
                                         plr.validWords = plr.validWords + 1;
                                     }
                                 } 
