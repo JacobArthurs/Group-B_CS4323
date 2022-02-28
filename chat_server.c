@@ -77,8 +77,7 @@ int main(int argc , char *argv[])
     {
         FD_ZERO(&readfds);                                                      // Clear File Descipters 
         FD_SET(ms, &readfds);                                                   // Add File Descipters to Master Socket
-        max_sd = ms;                                                            // Number of File Desciptors 
-          
+        max_sd = ms;                                                            // Number of File Desciptors   
         
         for (i = 0 ; i < max_clients ; i++)                                     // Loop to add Clients to Socket Descipter 
         {
@@ -123,7 +122,74 @@ int main(int argc , char *argv[])
                     break;
                 }
             }
-        } 
+        } // we need to add something to recieve each clients first input, call player.c so that they fill out their name and 
+        // country, and a way to send them to either singleplayer or multiplayer game
+        //struct user newPlr
+
+        int fork1 = fork();
+        if(fork1 > 0){
+            // we need the process that keeps track of all the input data and the client who did here
+            //pipeline the data over
+        }
+        if(fork1 == 0){
+            //pipelined data recieved here
+            //we need the input from where new clients are added, add it to player.c struct
+
+            int fork2 = fork();
+
+            if (fork2 > 0){
+                if(newPlr.gametype == 1){
+                    server();//randomly selects one of the input files
+                    struct wordList validWords;
+                    find_valid_words();//probably want to use the plr.randomAlphabets to be the valid words and set validWords
+                    //to be the list of valid words
+                    while(plr.skipCount < 3){//client always goes first in singleplayer
+                        client(plr);//will be changed to only print out the turn player menu
+                        while(true){//need to adjust this so that it only waits 4 minutes
+                            //pipleined data is looked at here
+                            //we need a pid of the client who input the data
+                            if (pids == plr.clientpid){
+                                if (plr.validWords == 3){
+                                    plr.skipCount = plr.skipCount + 1;
+                                    plr.validWords = 0;
+                                    break;
+                                }
+                                else if(/*pass condition*/){
+                                    plr.skipCount = plr.skipCount + 1;
+                                    plr.validWords = 0;
+                                    break;
+                                }
+                                else if(is_word_valid()){
+                                    register_points();
+                                    register_word();
+                                    plr.currentWord = ;//input
+                                    plr.skipCount = 0;
+                                    plr.validWords = 0;
+                                }
+                                else{
+                                    register_points();
+                                    plr.validWords = plr.validWords + 1;
+                                }
+                            }
+                        }
+                        if(plr.skipCount == 3){
+                            break;
+                        }
+                        gameOpponent(plr)//need to write gameOpponent
+                        if(valid){
+                            register_points();
+                            register_word();
+                            plr.currentWord = ;//server answer
+                            plr.skipCount = 0;
+                        }
+                        else{//bot passed
+                            plr.skipCount = plr.skipCount + 1;
+                        }
+                    }
+                    scoreboard(plr);
+                }
+            }
+        }
         
         for (i = 0; i < max_clients; i++)                                           // Main Program 
         {   

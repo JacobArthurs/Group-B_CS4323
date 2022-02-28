@@ -52,12 +52,12 @@ void singleplayerGame(struct user plr){
         }
         gameOpponent(plr)//need to write gameOpponent
         if(valid){
-            //update opponentScore, wordlist, etc.
-            //^needs to be added
+            register_points();
+            register_word();
+            plr.currentWord = ;//server answer
             plr.skipCount = 0;
         }
-        else{
-            //bot passed
+        else{//bot passed
             plr.skipCount = plr.skipCount + 1;
         }
     }
