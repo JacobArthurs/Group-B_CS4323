@@ -5,10 +5,16 @@
 
 #include "player.c"
 #include "client.c"
+#include "word_processing.c"
 //recvfrom chat_server the input data and the pid of the client who sent the input
 void singleplayerGame(struct user plr){
     int s;
     server();//randomly selects one of the input files
+    struct wordList validWords;
+    find_valid_words();//probably want to use the plr.randomAlphabets to be the valid words and set validWords
+    //to be the list of valid words
+
+    
 
     while(plr.skipCount < 3){//client always goes first in singleplayer
         client(plr);//will be changed to only print out the turn player menu
@@ -18,19 +24,27 @@ void singleplayerGame(struct user plr){
             recvfrom(s, pids, sizeof(pids), 5555, sizeof(5555));
             //we need a pid of the client who input the data
             if (pids == plr.clientpid){
-                //send data to word processing to be checked if valid or not.
-                //^needs to be added
-                if(valid){
-                    //update score, numFoundWords, numNewWords, currentWord, etc.
-                    //^needs to be added
+                if (plr.validWords == 3){
+                    plr.skipCount = plr.skipCount + 1;
+                    plr.validWords = 0;
+                    break;
+                }
+                else if(/*pass condition*/){
+                    plr.skipCount = plr.skipCount + 1;
+                    plr.validWords = 0;
+                    break;
+                }
+                else if(is_word_valid()){
+                    register_points();
+                    register_word();
+                    plr.currentWord = ;//input
                     plr.skipCount = 0;
+                    plr.validWords = 0;
                 }
                 else{
-                    //update score
-                    //^needs to be added
-                    plr.skipCount = plr.skipCount + 1;
+                    register_points();
+                    plr.validWords = plr.validWords + 1;
                 }
-                break;
             }
         }
         if(plr.skipCount == 3){
