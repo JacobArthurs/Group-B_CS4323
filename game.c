@@ -21,10 +21,6 @@ void singleplayerGame(struct user plr){
     while(plr.skipCount < 3){//client always goes first in singleplayer
         client(plr);//will be changed to only print out the turn player menu
         while(true){//need to adjust this so that it only waits 4 minutes
-            recvfrom(s, data, sizeof(data), 5555, sizeof(5555));//not sure if this is correct
-            //that said, this more or less is to recieve data from chat_server.c
-            recvfrom(s, pids, sizeof(pids), 5555, sizeof(5555));
-            //we need a pid of the client who input the data
             if (pids == plr.clientpid){
                 if (plr.validWords == 3){
                     plr.skipCount = plr.skipCount + 1;
@@ -66,6 +62,10 @@ void singleplayerGame(struct user plr){
     scoreboard(plr);
 }
 
+int main(){
+    struct user pl;
+
+}
 
 void multiplayerGame(struct user plr[2]){
     int x;

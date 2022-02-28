@@ -8,6 +8,10 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <sys/time.h> 
+#include "server.c"
+#include "player.c"
+#include "word_processing.c"
+#include "scoreboard.c"
   
 #define TRUE   1
 #define FALSE  0
@@ -77,7 +81,8 @@ int main(int argc , char *argv[])
     {
         FD_ZERO(&readfds);                                                      // Clear File Descipters 
         FD_SET(ms, &readfds);                                                   // Add File Descipters to Master Socket
-        max_sd = ms;                                                            // Number of File Desciptors   
+        max_sd = ms;                                                            // Number of File Desciptors
+        struct user newPlr;   
         
         for (i = 0 ; i < max_clients ; i++)                                     // Loop to add Clients to Socket Descipter 
         {
@@ -140,12 +145,12 @@ int main(int argc , char *argv[])
             if (fork2 > 0){
                 if(newPlr.gametype == 1){
                     struct user plr == newPlr;
-                    server();//randomly selects one of the input files
                     struct wordList validWords;
-                    find_valid_words();//probably want to use the plr.randomAlphabets to be the valid words and set validWords
+                    server();//randomly selects one of the input files
+
                     //to be the list of valid words
                     while(plr.skipCount < 3){//client always goes first in singleplayer
-                        client(plr);//will be changed to only print out the turn player menu
+                        print_game_status(plr);//will be changed to only print out the turn player menu
                         while(true){//need to adjust this so that it only waits 4 minutes
                             //pipleined data is looked at here
                             //we need a pid of the client who input the data
@@ -191,7 +196,67 @@ int main(int argc , char *argv[])
                 }
             }
             else if(fork2 == 0){
-                if(new)
+                if(newPlr.gametype == 2){
+                    struct user plr[3];
+                    fork3 = fork();
+                    if(plr[0].gametype != 2){
+                        plr[0] = newPlr;
+                    }
+                    else if(plr[1].gametype != 2){
+                        plr[1] = newPlr;
+                    }
+                    else if(plr[2].gametype != 2){
+                        plr[2] = newPlr;
+                    }
+                    if(fork3 > 0){
+                        //we need a waitroom
+                    }
+                    if(fork3 == 0){
+                        int x;
+                        int y;
+                        int z;
+                        struct wordList validWords;
+                        
+                        server();
+                        x = 0;//needs to be replaced with a randomized method
+                        y = 1;
+
+                        while(plr[0].skipCount < 3){
+                            print_game_status(plr[x]);
+                            while(true){//top few lines are the same as in single player
+                                //pipelined data used here
+                                if(pids == plr[x].clientpid){
+                                    if (plr.validWords == 3){
+                                        plr.skipCount = plr.skipCount + 1;
+                                        plr.validWords = 0;
+                                        break;
+                                    }
+                                    else if(/*pass condition*/){
+                                        plr.skipCount = plr.skipCount + 1;
+                                        plr.validWords = 0;
+                                        break;
+                                    }
+                                    else if(is_word_valid()){
+                                        register_points();
+                                        register_word();
+                                        plr.currentWord = ;//input
+                                        plr.skipCount = 0;
+                                        plr.validWords = 0;
+                                    }
+                                    else{
+                                        register_points();
+                                        plr.validWords = plr.validWords + 1;
+                                    }
+                                } 
+                            }
+                            z = x;
+                            x = y;
+                            y = z;
+                        }
+                        scoreboard(plr[x]);
+                        scoreboard(plr[y]);
+                    }
+                }
             }
         }
         
