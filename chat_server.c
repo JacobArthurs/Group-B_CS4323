@@ -139,6 +139,7 @@ int main(int argc , char *argv[])
 
             if (fork2 > 0){
                 if(newPlr.gametype == 1){
+                    struct user plr == newPlr;
                     server();//randomly selects one of the input files
                     struct wordList validWords;
                     find_valid_words();//probably want to use the plr.randomAlphabets to be the valid words and set validWords
@@ -188,6 +189,9 @@ int main(int argc , char *argv[])
                     }
                     scoreboard(plr);
                 }
+            }
+            else if(fork2 == 0){
+                if(new)
             }
         }
         
