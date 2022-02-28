@@ -11,8 +11,10 @@ void singleplayerGame(struct user plr){
     int s;
     server();//randomly selects one of the input files
     struct wordList validWords;
-    find_valid_words();//probably want to use the plr.randomAlphabets to be the valid words and set validWords
-    //to be the list of valid words
+    find_valid_words(validWords, filePointer);//probably want to use the plr.randomAlphabets to be the valid words and set validWords
+    // to be the list of valid words
+    // Needs the following parameters:
+    //      The FILE -- both the input and dictionary files
 
     
 

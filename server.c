@@ -4,9 +4,9 @@
 
 void server(){
     //Allocate array to hold 10 file names
-    char **fileNames = malloc(sizeof(int) * 10);
+    char **fileNames = malloc(sizeof(int) * 11);
     //Allocate each cell in filesnames array to hold 21 characters
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 11; i++){
         fileNames[i] = malloc( 21 * sizeof *fileNames[i] );
     }
     //Initialize all filenames
@@ -20,11 +20,14 @@ void server(){
     strcpy(fileNames[7], "./input/input_08.txt");
     strcpy(fileNames[8], "./input/input_09.txt");
     strcpy(fileNames[9], "./input/input_10.txt");
-    //select a random index
+    strcpy(filenames[10], "./input/dictionary.txt");
+    //select a random index (other than dictionary.txt index)
     srand(time(NULL));
     int randomIndex = rand() % 9;
     //open random file
     FILE *fptr = fopen(fileNames[randomIndex], "r");
+    FILE *fptr_dict = fopen(filenames[10], "r");
+    
     //disolve filenames memory
     free(fileNames);
 
@@ -37,6 +40,7 @@ void server(){
     //print beginning letters of file
     char *letters = malloc(7);
     fgets(letters, 7, fptr);
+    
     printf("Available letters: %s\n", letters);
 
     //print random beginning letter to slected player

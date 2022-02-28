@@ -65,7 +65,7 @@ _Bool has_been_used(char input[], struct wordList *list) {                      
     return false;
 }
 
-void find_valid_words(struct wordList *list, FILE *pointer, char alphabet[], struct alphabet *alpha, _Bool skipLines) {
+void find_valid_words(struct wordList *list, FILE *pointer, struct alphabet *alpha, _Bool skipLines) {
     char buffer_in[100];                                                    // buffer to read in from the  file
     int currIndex = 0;                                                     // determines end of user input words / beginning of dictionary words in validWords
     
@@ -85,8 +85,8 @@ void find_valid_words(struct wordList *list, FILE *pointer, char alphabet[], str
         fgets(buffer_in, 100, pointer);                                      // get first word in the dictionary
         while (!feof(pointer)) {
             char firstLetter = buffer_in[0] - 32;
-            if (strchr(alphabet, firstLetter) != NULL) {                      // if first character is in the alphabet
-                if (check_letters(buffer_in, alphabet) && !(has_been_used(buffer_in, list))) {
+            if (strchr(alpha->alphabet, firstLetter) != NULL) {                      // if first character is in the alphabet
+                if (check_letters(buffer_in, alpha->alphabet) && !(has_been_used(buffer_in, list))) {
                     register_word(buffer_in, list);                            // add current word to the list
                 }
             }
