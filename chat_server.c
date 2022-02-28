@@ -8,6 +8,10 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <sys/time.h> 
+#include "server.c"
+#include "player.c"
+#include "word_processing.c"
+#include "scoreboard.c"
   
 #define TRUE   1
 #define FALSE  0
@@ -77,7 +81,8 @@ int main(int argc , char *argv[])
     {
         FD_ZERO(&readfds);                                                      // Clear File Descipters 
         FD_SET(ms, &readfds);                                                   // Add File Descipters to Master Socket
-        max_sd = ms;                                                            // Number of File Desciptors   
+        max_sd = ms;                                                            // Number of File Desciptors
+        struct user newPlr;   
         
         for (i = 0 ; i < max_clients ; i++)                                     // Loop to add Clients to Socket Descipter 
         {
@@ -145,7 +150,7 @@ int main(int argc , char *argv[])
 
                     //to be the list of valid words
                     while(plr.skipCount < 3){//client always goes first in singleplayer
-                        client(plr);//will be changed to only print out the turn player menu
+                        print_game_status(plr);//will be changed to only print out the turn player menu
                         while(true){//need to adjust this so that it only waits 4 minutes
                             //pipleined data is looked at here
                             //we need a pid of the client who input the data
@@ -217,7 +222,7 @@ int main(int argc , char *argv[])
                         y = 1;
 
                         while(plr[0].skipCount < 3){
-                            client(plr[x]);
+                            print_game_status(plr[x]);
                             while(true){//top few lines are the same as in single player
                                 //pipelined data used here
                                 if(pids == plr[x].clientpid){
