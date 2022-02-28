@@ -44,6 +44,9 @@ void server(plr, validWords){
     find_valid_words(&validWords, fptr, letters, true);           // add all valid words in input file to validWords list
     find_valid_words(&validWords, fptr_dict, letters, false);      // add all valid words in the dictionary file to validWords list
     
+    // fill in user randomLetters
+    plr.randomLetters = letters;
+    
     // printf("Available letters: %s\n", letters);
 
     //print random beginning letter to slected player
