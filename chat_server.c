@@ -205,7 +205,7 @@ int main(int argc , char *argv[])
                     else if(plr[1].gametype != 2){
                         plr[1] = newPlr;
                     }
-                    else if(plr[2].gametype{
+                    else if(plr[2].gametype != 2){
                         plr[2] = newPlr;
                     }
                     if(fork3 > 0){

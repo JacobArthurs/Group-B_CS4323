@@ -23,6 +23,8 @@ struct user {
     char country[20];
     int skipCount;
     int clientpid;
+    int gametype;
+    int index;
 };
 
 //1=singleplayer, 2=multiplayer
