@@ -298,6 +298,17 @@ void print_game_status(struct wordList *usedWords, struct plr player , char firs
     // Combine with game logic to print out differet last set of statements when the next player gets to choose the char
 }
 
+// NOTE: in order to return a string from this method it will need to be passed a string pointer from the caller
+void generate_oppponent_word(struct wordList *usedWords, struct plr player, char prevWord[], struct wordList validWords,
+                             char *oppWord[]) {
+    // Cycle through valid words' input file portion only for opponent moves
+    for (int i = 0 ; i < player -> index; ++i) {
+        // if the word has not been used and is valid based on the previous word, copy the string to the external oppWord char array (String)
+        if (!has_been_used(player->usedWords[i][0]) && is_word_valid(player->usedWords[i][0], player.randomAlphabets, player.usedWords, validWords, prevword, prevWord[strlen(prevWord - 1)])) {
+            strcpy(oppWord, player->usedWords[i][0])
+        }
+    }
+}
 
 void start_game(void) {
     
