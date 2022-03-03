@@ -43,9 +43,10 @@ int main(int argc , char *argv[])
     int single = 99;
     int first_player;
     int second_player;
-    int single_player[3];
-    int spGR[3];
-    char *singlegame_message[3];
+    int single_player[];
+    //int spGR[3];
+    char *singlegame_message[];
+    int x;
     
     fd_set readfds;
     
@@ -192,82 +193,27 @@ int main(int argc , char *argv[])
                     printf("Player[%i] -> typed: %s", i, mes);
 
                     if (!strcmp(mes, "1\n")) { //Entering Single Player Game
-                        if(spGR[0] == 0){
-                            spGR[0] == 1;
-                        }
-                        else if(spGR[0] == 1 && spGR[1] == 0){
-                            spGR[1] == 1;
-                        }
-                        else if(spGR[0] == 1 && spGR[1] == 1){
-                            spGR[2] == 1;
-                        }
+                        x = x + 1;
                         int fork1 == fork();
-                        if(spGR[2] == 1){
-                            if(fork1 == 0){
-                                while(1){ // Keep State (Don't Really Need)
-                                    printf("Player[%i]: Entering Single Player Game\n", i);
-                                    printf("Child[%d] Parent[%d]\n", getpid(), getppid());
-                                    message = "Entering Single Player Game\n\0";
-                                    memset(mes, 0, strlen(mes));                                        
-                                    strcat(mes, message); 
-                                    send(client_socket_init[i], mes, strlen(mes), 0);
-                                    if (single == 99) {
-                                        single = i;
-                                        single_player[0] = single;
-                                    }
-                                    singlegame_message[0] = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
-                                    send(client_socket_init[single_player[0]], singlegame_message[0], strlen(singlegame_message[0]), 0);
-                                    //break;
-                                    //add running game
+                        if(fork1 == 0){
+                            while(1){ // Keep State (Don't Really Need)
+                                printf("Player[%i]: Entering Single Player Game\n", i);
+                                printf("Child[%d] Parent[%d]\n", getpid(), getppid());
+                                message = "Entering Single Player Game\n\0";
+                                memset(mes, 0, strlen(mes));                                        
+                                strcat(mes, message); 
+                                send(client_socket_init[i], mes, strlen(mes), 0);
+                                if (single == 99) {
+                                    single = i;
+                                    single_player[x] = single;
                                 }
+                                singlegame_message[x] = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
+                                send(client_socket_init[single_player[x]], singlegame_message[x], strlen(singlegame_message[x]), 0);
+                                //break;
+                                //add running game
                             }
-                            kill(fork1,SIGKILL);
-                            spGR[2] == 0;
                         }
-                        else if(spGR[1] == 1){
-                            if(fork1 == 0){
-                                while(1){ // Keep State (Don't Really Need)
-                                    printf("Player[%i]: Entering Single Player Game\n", i);
-                                    printf("Child[%d] Parent[%d]\n", getpid(), getppid());
-                                    message = "Entering Single Player Game\n\0";
-                                    memset(mes, 0, strlen(mes));                                        
-                                    strcat(mes, message); 
-                                    send(client_socket_init[i], mes, strlen(mes), 0);
-                                    if (single == 99) {
-                                        single = i;
-                                        single_player[1] = single;
-                                    }
-                                    singlegame_message[1] = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
-                                    send(client_socket_init[single_player[1]], singlegame_message[1], strlen(singlegame_message[1]), 0);
-                                    //break;
-                                    //add running game
-                                }
-                            }
-                            kill(fork1,SIGKILL);
-                            spGR[1] == 0;
-                        }
-                        else if(spGR[0] == 1){
-                            if(fork1 == 0){
-                                while(1){ // Keep State (Don't Really Need)
-                                    printf("Player[%i]: Entering Single Player Game\n", i);
-                                    printf("Child[%d] Parent[%d]\n", getpid(), getppid());
-                                    message = "Entering Single Player Game\n\0";
-                                    memset(mes, 0, strlen(mes));                                        
-                                    strcat(mes, message); 
-                                    send(client_socket_init[i], mes, strlen(mes), 0);
-                                    if (single == 99) {
-                                        single = i;
-                                        single_player[0] = single;
-                                    }
-                                    singlegame_message[2] = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
-                                    send(client_socket_init[single_player[2]], singlegame_message[2], strlen(singlegame_message[2]), 0);
-                                    //break;
-                                    //add running game
-                                }
-                            }
-                            kill(fork1,SIGKILL);
-                            spGR[0] == 0;
-                        }
+                            //kill(fork1,SIGKILL);                       
                     }
 
 
