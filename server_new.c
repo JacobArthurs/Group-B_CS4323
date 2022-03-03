@@ -44,6 +44,7 @@ int main(int argc , char *argv[])
     int first_player;
     int second_player;
     int single_player;
+    struct user plr[3];
     
     fd_set readfds;
     
@@ -193,6 +194,19 @@ int main(int argc , char *argv[])
                         while(1){ // Keep State (Don't Really Need)
                             printf("Player[%i]: Entering Single Player Game\n", i);
                             printf("Child[%d] Parent[%d]\n", getpid(), getppid());
+                            int player;
+                            if(plr[0].clientpid == 0){
+                                plr[0].clientpid = getpid();
+                                player = 0;
+                            }
+                            else if(plr[1] == 0){
+                                plr[1].clientpid = getpid();
+                                player = 1;
+                            }
+                            else{
+                                plr[2].clientpid = getpid();
+                                player = 2;
+                            }
                             message = "Entering Single Player Game\n\0";
                             memset(mes, 0, strlen(mes));                                        
                             strcat(mes, message); 
@@ -203,6 +217,14 @@ int main(int argc , char *argv[])
                             }
                             char *singlegame_message = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
                             send(client_socket_init[single_player], singlegame_message, strlen(singlegame_message), 0);
+                            firstname(plr[player].clientpid);
+
+
+                            while(true){//unmade game at the moment
+
+
+
+                            }
                             break;
                         }
                     }
