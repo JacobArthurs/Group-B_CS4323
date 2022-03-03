@@ -27,6 +27,11 @@ struct user {
     int validWords
 };
 
+void firstname(int pid){
+    char message[] = "Please enter your first name: \n\0";
+    send(pid, message, strlen(message), 0);
+}
+
 //1=singleplayer, 2=multiplayer
 struct user player(struct user currentPlayer){
     //Ignore all initialization of struct, it is a placeholder. Struct data will be obtained from server.
