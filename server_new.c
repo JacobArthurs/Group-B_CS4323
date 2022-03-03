@@ -14,6 +14,10 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <sys/time.h> 
+#include "word_processing.c"
+#include "scoreboard.c"
+#include "player.c"
+#include "server.c"
 
   
 #define TRUE   1
@@ -227,9 +231,9 @@ int main(int argc , char *argv[])
                             server(plr[player], validWords[player]);
                             while(plr.skipCount < 3){//client always goes first in singleplayer
                                 if(plr[player].skipCount == 2){
-
+                                    plr[player].currentWord = "";
                                 }
-                                print_game_status(&plr[player].usedWords, plr[player], plr[player].randomAlphabets);//will be changed to only print out the turn player menu
+                                print_game_status(&plr[player].wordList, plr[player], plr[player].randomAlphabets);//will be changed to only print out the turn player menu
                                 while(true){//need to adjust this so that it only waits 4 minutes
                                     char input[20] = recv(plr[player].clientpid,buffer,1024,0);
                                     if (plr[player].validWords == 3){
@@ -237,12 +241,12 @@ int main(int argc , char *argv[])
                                         plr[player].validWords = 0;
                                         break;
                                     }
-                                    else if(/*pass condition*/){
+                                    else if(strcmp(input, "Pass")){
                                         plr[player].skipCount = plr[player].skipCount + 1;
                                         plr[player].validWords = 0;
                                         break;
                                     }
-                                    else if(is_word_valid(input, plr[player].randomAlphabets, plr[player].wordList,
+                                    else if(is_word_valid(input, plr[player].randomAlphabets, plr[player],
                                             &validWords[player], false, plr[player].currentWord[strlen(plr[player].currentWord)-1])){
                                         plr[player].currentWord = input;//input
                                         register_points(plr[player], plr[player].currentWord, validWords[player]);

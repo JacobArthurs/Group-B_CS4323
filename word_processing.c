@@ -303,7 +303,7 @@ void generate_oppponent_word(struct user player, char prevWord[], struct wordLis
     // Cycle through valid words' input file portion only for opponent moves
     for (int i = 0 ; i < player -> index; ++i) {
         // if the word has not been used and is valid based on the previous word, copy the string to the external oppWord char array (String)
-        if (!has_been_used(player->usedWords[i][0]) && is_word_valid(player->usedWords[i][0], player.randomAlphabets, player.usedWords, validWords, prevword, prevWord[strlen(prevWord - 1)])) {
+        if (!has_been_used(player->wordList[i][0]) && is_word_valid(player->wordList[i][0], player.randomAlphabets, player.wordList, validWords, prevword, prevWord[strlen(prevWord - 1)])) {
             strcpy(player.currentWord, player->usedWords[i][0])
             passing = false;
             break;
