@@ -72,6 +72,17 @@ _Bool has_been_used(char input[], struct user plr) {                           /
     return false;
 }
 
+_Bool has_been_used2(char input[], struct wordList *list) {                           // check if current input is present in previously used words
+        
+    int i;
+    for (i = 0; i < sizeof(list.index - 1); ++i) {
+        if (strncmp(input, list.wordList[i], strlen(input)) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void find_valid_words(struct wordList *list, FILE *pointer, char *letters, _Bool skipLines) {
     char buffer_in[100];                                                    // buffer to read in from the  file
     int currIndex = 0;                                                     // determines end of user input words / beginning of dictionary words in validWords
@@ -93,7 +104,7 @@ void find_valid_words(struct wordList *list, FILE *pointer, char *letters, _Bool
         while (!feof(pointer)) {
             char firstLetter = buffer_in[0] - 32;
             if (strchr(letters, firstLetter) != NULL) {                      // if first character is in the alphabet
-                if (check_letters(buffer_in, letters) && !(has_been_used(buffer_in, list))) {
+                if (check_letters(buffer_in, letters) && !(has_been_used2(buffer_in, list))) {
                     register_word2(buffer_in, list);                            // add current word to the list
                 }
             }
@@ -116,8 +127,8 @@ _Bool is_bonus_word(char input[], struct wordList *validWords) {                
 void print_word_list(struct user player) {                                        // print all previously used words to the console
     int i;
     printf("Previously used words:\n");
-    for (i = 0; i < player -> index; ++i) {
-        printf("%s\n", wordList[i]);
+    for (i = 0; i < player.index; ++i) {
+        printf("%s\n", player.wordList[i]);
     }
 }
 
@@ -150,7 +161,7 @@ _Bool is_postfix(char input[], char prevWord[]) {                               
 }
 
 _Bool is_first_run(struct user plr) {                                         // confirms if this is the first run of the game
-    if (plr -> index == 0) {
+    if (plr.index == 0) {
         return true;
     }
     return false;
@@ -164,7 +175,7 @@ _Bool is_valid_start(char input[], char randChar) {                             
 // Cofirms whether a word is a valid next word for the game
 _Bool is_word_valid(char input[], char alphabet[], struct user plr, struct wordList *validWords, _Bool userCharPick, char randChar) {
     char prevWord[100];
-    strcpy(prevWord, plr->wordList[plr->index - 1]);
+    strcpy(prevWord, plr.wordList[plr.index - 1]);
 
     // Return true if:
     //                 The word contains the right kind of letters
