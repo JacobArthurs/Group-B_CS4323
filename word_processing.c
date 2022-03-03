@@ -106,7 +106,7 @@ _Bool is_bonus_word(char input[], struct wordList *validWords) {                
     return false;
 }
 
-void print_word_list(struct wordList *list) {                                        // print all previously used words to the console
+void print_word_list(char *list[][]) {                                        // print all previously used words to the console
     int i;
     printf("Previously used words:\n");
     for (i = 0; i < list->index; ++i) {
@@ -280,7 +280,7 @@ void register_points(struct plr player, char input[], struct wordList *validWord
 //    }
 //}
 
-void print_game_status(struct wordList *usedWords, struct plr player , char firstLine[]) {
+void print_game_status(struct user player , char firstLine[]) {
     char nextChar;
     char prevWord[100];
 
@@ -289,8 +289,6 @@ void print_game_status(struct wordList *usedWords, struct plr player , char firs
     printf("Usable Letters: %s\n",player.randomAlphabets);
     printf("Your Current Score: %d\n",player.score);
     printf("Your Opponents Current Score: %d\n",player.opponentScore);
-    print_word_list(player.usedWords);
-
     printf("Starting Character of the next word: %s\n",player.currentWord[strlen(currentWord)-1]);
     printf("Please input one appropraite word: \n");
 
