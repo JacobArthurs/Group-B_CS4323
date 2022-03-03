@@ -226,6 +226,9 @@ int main(int argc , char *argv[])
                             plr[player].country = recv(plr[player].clientpid,buffer,1024,0);
                             server(plr[player], validWords[player]);
                             while(plr.skipCount < 3){//client always goes first in singleplayer
+                                if(plr[player].skipCount == 2){
+
+                                }
                                 print_game_status(&plr[player].usedWords, plr[player], plr[player].randomAlphabets);//will be changed to only print out the turn player menu
                                 while(true){//need to adjust this so that it only waits 4 minutes
                                     char input[20] = recv(plr[player].clientpid,buffer,1024,0);
@@ -239,11 +242,11 @@ int main(int argc , char *argv[])
                                         plr[player].validWords = 0;
                                         break;
                                     }
-                                    else if(is_word_valid(plr[player].currentWord, plr[player].randomAlphabets, plr[player].wordList,
+                                    else if(is_word_valid(input, plr[player].randomAlphabets, plr[player].wordList,
                                             &validWords[player], false, plr[player].currentWord[strlen(plr[player].currentWord)-1])){
-                                        register_points(plr[player], plr[player].currentWord, validWords[player]);
-                                        register_word(plr[player].wordList);
                                         plr[player].currentWord = input;//input
+                                        register_points(plr[player], plr[player].currentWord, validWords[player]);
+                                        register_word(plr[player].currentWord,plr[player].wordList);
                                         plr[player].skipCount = 0;
                                         plr[player].validWords = 0;
                                     }
@@ -255,10 +258,8 @@ int main(int argc , char *argv[])
                                 if(plr[player].skipCount == 3){
                                     break;
                                 }
-                                
-
-                                generate_opponent_word(player, player.currentWord, &validWords)//need to write gameOpponent
-                                if(valid){
+                                generate_opponent_word(plr[player], plr[player].currentWord, &validWords[player])//need to write gameOpponent
+                                if(strcmp(plr[player].currentWord, input) == 0){
                                     register_points(plr[player], plr[player].currentWord, validWords[player]);
                                     register_word(plr[player].wordList);
                                     plr[player].skipCount = 0;
