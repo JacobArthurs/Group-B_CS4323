@@ -249,7 +249,7 @@ int main(int argc , char *argv[])
                                     else if(is_word_valid(input, plr[player].randomAlphabets, plr[player],
                                             &validWords[player], false, plr[player].currentWord[strlen(plr[player].currentWord)-1])){
                                         register_points(plr[player], input, validWords[player]);
-                                        register_word(plr[player].currentWord,plr[player].wordList);
+                                        register_word(input,plr[player]);
                                         plr[player].currentWord = input;//input
                                         plr[player].skipCount = 0;
                                         plr[player].validWords = 0;
@@ -275,7 +275,7 @@ int main(int argc , char *argv[])
                                 generate_opponent_word(plr[player], plr[player].currentWord, &validWords[player])//need to write gameOpponent
                                 if(strcmp(plr[player].currentWord, input) == 0){
                                     register_points(plr[player], plr[player].currentWord, validWords[player]);
-                                    register_word(plr[player].wordList);
+                                    register_word(plr[player].currentWord, plr[player]);
                                     plr[player].skipCount = 0;
                                 }
                                 else{//bot passed
