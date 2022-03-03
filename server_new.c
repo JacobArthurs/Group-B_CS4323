@@ -225,12 +225,48 @@ int main(int argc , char *argv[])
                             country(plr[player].clientpid);
                             plr[player].country = recv(plr[player].clientpid,buffer,1024,0);
                             server(plr[player], validWords[player]);
-
-                            while(true){//unmade game at the moment
-
-
-
+                            while(plr.skipCount < 3){//client always goes first in singleplayer
+                                print_game_status(&plr[player].usedWords, plr[player], plr[player].randomAlphabets);//will be changed to only print out the turn player menu
+                                while(true){//need to adjust this so that it only waits 4 minutes
+                                    char input[20] = recv(plr[player].clientpid,buffer,1024,0);
+                                    if (plr[player].validWords == 3){
+                                        plr[player].skipCount = plr[player].skipCount + 1;
+                                        plr[player].validWords = 0;
+                                        break;
+                                    }
+                                    else if(/*pass condition*/){
+                                        plr[player].skipCount = plr[player].skipCount + 1;
+                                        plr[player].validWords = 0;
+                                        break;
+                                    }
+                                    else if(is_word_valid(plr[player].currentWord, plr[player].randomAlphabets, plr[player].wordList,
+                                            &validWords[player], false, plr[player].currentWord[strlen(plr[player].currentWord)-1])){
+                                        register_points(plr[player], plr[player].currentWord, validWords[player]);
+                                        register_word(plr[player].wordList);
+                                        plr[player].currentWord = ;//input
+                                        plr[player].skipCount = 0;
+                                        plr[player].validWords = 0;
+                                    }
+                                    else{
+                                        register_points(plr[player], plr[player].currentWord, validWords[player]);
+                                        plr[player].validWords = plr[player].validWords + 1;
+                                    }
+                                }
+                                if(plr[player].skipCount == 3){
+                                    break;
+                                }
+                                generate_opponent_word()//need to write gameOpponent
+                                if(valid){
+                                    register_points(plr[player], plr[player].currentWord, validWords[player]);
+                                    register_word(plr[player].wordList);
+                                    plr[player].currentWord = ;//server answer
+                                    plr[player].skipCount = 0;
+                                }
+                                else{//bot passed
+                                    plr[player].skipCount = plr[player].skipCount + 1;
+                                }
                             }
+                            singlePlayerScoreboard(plr[player]);
                             break;
                         }
                     }

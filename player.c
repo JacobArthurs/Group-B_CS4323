@@ -12,7 +12,7 @@
 struct user {
     char randomAlphabets[7];
     char wordList[20][100]; 
-    char currentWord[7];
+    char currentWord[20];
     int score;
     int opponentScore;
     int numFoundWords;
@@ -23,8 +23,8 @@ struct user {
     char country[20];
     int skipCount;
     int clientpid;
-    int gametype;
     int index;
+    int validWords
 };
 
 //1=singleplayer, 2=multiplayer
