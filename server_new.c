@@ -222,11 +222,11 @@ int main(int argc , char *argv[])
                             }
                             char *singlegame_message = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
                             send(client_socket_init[single_player], singlegame_message, strlen(singlegame_message), 0);
-                            firstname(plr[player].clientpid);
+                            fname(plr[player].clientpid);
                             plr[player].firstName = recv(plr[player].clientpid,buffer,1024,0);
-                            lastname(plr[player].clientpid);
+                            lname(plr[player].clientpid);
                             plr[player].lastName = recv(plr[player].clientpid,buffer,1024,0);
-                            country(plr[player].clientpid);
+                            cnty(plr[player].clientpid);
                             plr[player].country = recv(plr[player].clientpid,buffer,1024,0);
                             server(plr[player], validWords[player]);
                             while(plr.skipCount < 3){//client always goes first in singleplayer

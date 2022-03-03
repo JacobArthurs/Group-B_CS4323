@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
-#include "text_processing.h"
+//#include "text_processing.h"
 #include "player.c"
 
 typedef struct wordList {

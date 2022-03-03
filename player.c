@@ -9,7 +9,7 @@
 #include <time.h>
 #include <stdbool.h>
 
-struct user {
+typedef struct user {
     char randomAlphabets[7];
     char wordList[20][100]; 
     char currentWord[20];
@@ -24,20 +24,20 @@ struct user {
     int skipCount;
     int clientpid;
     int index;
-    int validWords
-};
+    int validWords;
+} ;
 
-void firstname(int pid){
+void fname(int pid){
     char *message = "Please enter your first name: \n\0";
     send(pid, message, strlen(message), 0);
 }
 
-void lastname(int pid){
+void lname(int pid){
     char *message = "Please enter your last name: \n\0";
     send(pid, message, strlen(message), 0);
 }
 
-void country(int pid){
+void cnty(int pid){
     char *message = "Please enter your country: \n\0";
     send(pid, message, strlen(message), 0);
 }
