@@ -49,8 +49,8 @@ _Bool check_letters(char input[], char alphabet[]) {                            
     return true;
 }
 
-void register_word(char input[], struct wordList *list ) {                          // Adds a used word into list of previous words
-    strcpy(list->words[list -> index], input);
+void register_word(char input[], struct user *list ) {                          // Adds a used word into list of previous words
+    strcpy(list->wordList[list -> index], input);
     list -> index++;
     return;
 }
@@ -107,7 +107,7 @@ _Bool is_bonus_word(char input[], struct wordList *validWords) {                
     return false;
 }
 
-void print_word_list( struct user player) {                                        // print all previously used words to the console
+void print_word_list(struct user player) {                                        // print all previously used words to the console
     int i;
     printf("Previously used words:\n");
     for (i = 0; i < player -> index; ++i) {

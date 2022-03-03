@@ -251,6 +251,7 @@ int main(int argc , char *argv[])
                                         plr[player].currentWord = input;//input
                                         register_points(plr[player], plr[player].currentWord, validWords[player]);
                                         register_word(plr[player].currentWord,plr[player].wordList);
+                                        plr[player].index = plr[player] + 1;
                                         plr[player].skipCount = 0;
                                         plr[player].validWords = 0;
                                     }
