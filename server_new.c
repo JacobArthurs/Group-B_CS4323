@@ -257,7 +257,7 @@ int main(int argc , char *argv[])
                                 }
                                 
 
-                                generate_opponent_word(player, player.currentWord, &validWords, /*need a variable to store the opponent word in*/)//need to write gameOpponent
+                                generate_opponent_word(player, player.currentWord, &validWords)//need to write gameOpponent
                                 if(valid){
                                     register_points(plr[player], plr[player].currentWord, validWords[player]);
                                     register_word(plr[player].wordList);
