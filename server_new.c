@@ -243,7 +243,7 @@ int main(int argc , char *argv[])
                                             &validWords[player], false, plr[player].currentWord[strlen(plr[player].currentWord)-1])){
                                         register_points(plr[player], plr[player].currentWord, validWords[player]);
                                         register_word(plr[player].wordList);
-                                        plr[player].currentWord = ;//input
+                                        plr[player].currentWord = input;//input
                                         plr[player].skipCount = 0;
                                         plr[player].validWords = 0;
                                     }
@@ -261,7 +261,6 @@ int main(int argc , char *argv[])
                                 if(valid){
                                     register_points(plr[player], plr[player].currentWord, validWords[player]);
                                     register_word(plr[player].wordList);
-                                    plr[player].currentWord = ;//server answer
                                     plr[player].skipCount = 0;
                                 }
                                 else{//bot passed
