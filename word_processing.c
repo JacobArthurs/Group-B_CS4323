@@ -297,7 +297,7 @@ void print_game_status(struct user player , char firstLine[]) {
 }
 
 // NOTE: in order to return a string from this method it will need to be passed a string pointer from the caller
-void generate_oppponent_word(struct wordList *usedWords, struct plr player, char prevWord[], struct wordList validWords,
+void generate_oppponent_word(struct user player, char prevWord[], struct wordList validWords,
                              char *oppWord[]) {
     _Bool passing = true;
     
