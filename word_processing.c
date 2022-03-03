@@ -217,7 +217,7 @@ _Bool is_word_valid(char input[], char alphabet[], struct wordList *usedWords, s
 //    }
 //}
 
-void register_points(struct plr player, char input[], struct wordList *validWords) {                // register points in score card
+void register_points(struct user player, char input[], struct wordList *validWords) {                // register points in score card
     int wordLen = (int) strlen(input);
     
     if (playerNum == 1) {
