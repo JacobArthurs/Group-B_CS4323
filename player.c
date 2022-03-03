@@ -25,7 +25,7 @@ typedef struct user {
     int clientpid;
     int index;
     int validWords;
-} ;
+} user;
 
 void fname(int pid){
     char *message = "Please enter your first name: \n\0";
