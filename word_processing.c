@@ -55,18 +55,18 @@ void register_word(char input[], struct user *list ) {                          
     return;
 }
 
-_Bool has_been_used(char input[], struct wordList *list) {                           // check if current input is present in previously used words
+_Bool has_been_used(char input[], struct user plr) {                           // check if current input is present in previously used words
         
     int i;
-    for (i = 0; i < sizeof(list); ++i) {
-        if (strncmp(input, list->words[i], strlen(input)) == 0) {
+    for (i = 0; i < sizeof(plr.index - 1); ++i) {
+        if (strncmp(input, plr->wordList[i], strlen(input)) == 0) {
             return true;
         }
     }
     return false;
 }
 
-void find_valid_words(struct wordList *list, FILE *pointer, struct alphabet *alpha, _Bool skipLines) {
+void find_valid_words(struct wordList *list, FILE *pointer, char *letters, _Bool skipLines) {
     char buffer_in[100];                                                    // buffer to read in from the  file
     int currIndex = 0;                                                     // determines end of user input words / beginning of dictionary words in validWords
     
@@ -86,8 +86,8 @@ void find_valid_words(struct wordList *list, FILE *pointer, struct alphabet *alp
         fgets(buffer_in, 100, pointer);                                      // get first word in the dictionary
         while (!feof(pointer)) {
             char firstLetter = buffer_in[0] - 32;
-            if (strchr(alpha->alphabet, firstLetter) != NULL) {                      // if first character is in the alphabet
-                if (check_letters(buffer_in, alpha->alphabet) && !(has_been_used(buffer_in, list))) {
+            if (strchr(letters, firstLetter) != NULL) {                      // if first character is in the alphabet
+                if (check_letters(buffer_in, letters) && !(has_been_used(buffer_in, list))) {
                     register_word(buffer_in, list);                            // add current word to the list
                 }
             }
@@ -143,8 +143,8 @@ _Bool is_postfix(char input[], char prevWord[]) {                               
     return false;
 }
 
-_Bool is_first_run(struct wordList *usedWords) {                                         // confirms if this is the first run of the game
-    if (usedWords -> index == 0) {
+_Bool is_first_run(struct user plr) {                                         // confirms if this is the first run of the game
+    if (plr -> index == 0) {
         return true;
     }
     return false;
@@ -156,9 +156,9 @@ _Bool is_valid_start(char input[], char randChar) {                             
 }
 
 // Cofirms whether a word is a valid next word for the game
-_Bool is_word_valid(char input[], char alphabet[], struct wordList *usedWords, struct wordList *validWords, _Bool userCharPick, char randChar) {
+_Bool is_word_valid(char input[], char alphabet[], struct user plr, struct wordList *validWords, _Bool userCharPick, char randChar) {
     char prevWord[100];
-    strcpy(prevWord, usedWords->words[usedWords->index - 1]);
+    strcpy(prevWord, plr->wordList[plr->index - 1]);
 
     // Return true if:
     //                 The word contains the right kind of letters
@@ -166,7 +166,7 @@ _Bool is_word_valid(char input[], char alphabet[], struct wordList *usedWords, s
     //                 The word is a postfix in some way of the previously used word
     //                 Account for whether this turn allows player to choose random characters
     
-    if (check_letters(input, alphabet) && !has_been_used(input, usedWords) && is_first_run(usedWords) && !userCharPick
+    if (check_letters(input, alphabet) && !has_been_used(input, plr) && is_first_run(plr) && !userCharPick
         && is_valid_start(input, randChar)) {
         return true;
     }

@@ -233,7 +233,7 @@ int main(int argc , char *argv[])
                                 if(plr[player].skipCount == 2){
                                     strcpy(plr[player].currentWord, "");
                                 }
-                                print_game_status(plr[player], );//will be changed to only print out the turn player menu
+                                print_game_status(plr[player], );//ask about later
                                 while(true){//need to adjust this so that it only waits 4 minutes
                                     char input[20] = recv(plr[player].clientpid,buffer,1024,0);
                                     if (plr[player].validWords == 3){
@@ -251,9 +251,13 @@ int main(int argc , char *argv[])
                                         plr[player].currentWord = input;//input
                                         register_points(plr[player], plr[player].currentWord, validWords[player]);
                                         register_word(plr[player].currentWord,plr[player].wordList);
-                                        plr[player].index = plr[player] + 1;
                                         plr[player].skipCount = 0;
                                         plr[player].validWords = 0;
+                                    }
+                                    else if(has_been_used(input, plr[player])){
+                                        input = "used";
+                                        register_points(plr[player], input, validWords[player]);
+                                        plr[player].validWords = plr[player].validWords + 1;
                                     }
                                     else{
                                         input = "invalid";
