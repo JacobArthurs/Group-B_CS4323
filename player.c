@@ -32,6 +32,16 @@ void firstname(int pid){
     send(pid, message, strlen(message), 0);
 }
 
+void lastname(int pid){
+    char *message = "Please enter your last name: \n\0";
+    send(pid, message, strlen(message), 0);
+}
+
+void country(int pid){
+    char *message = "Please enter your country: \n\0";
+    send(pid, message, strlen(message), 0);
+}
+
 //1=singleplayer, 2=multiplayer
 struct user player(struct user currentPlayer){
     //Ignore all initialization of struct, it is a placeholder. Struct data will be obtained from server.
