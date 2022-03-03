@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include "text_processing.h"
+#include "player.c"
 
 typedef struct wordList {
     char    words[50][100];                                     // store all the words used through the game
