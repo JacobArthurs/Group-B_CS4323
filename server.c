@@ -47,11 +47,12 @@ void server(struct user plr, struct wordList validWords){
     find_valid_words(&validWords, fptr_dict, letters, false);      // add all valid words in the dictionary file to validWords list
     
     // fill in user randomLetters
-    plr.randomLetters = letters;
+    plr.randomAlphabets = letters;
     
     // printf("Available letters: %s\n", letters);
 
     //print random beginning letter to slected player
     randomIndex = rand() % 8;
     printf("Starting letter: %s", letters[randomIndex]);
+    plr.currentWord = letters[randomIndex];
 }
