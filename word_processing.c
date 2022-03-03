@@ -55,11 +55,17 @@ void register_word(char input[], struct user *list ) {                          
     return;
 }
 
+void register_word2(char input[], struct wordList *list){
+    strcpy(list->wordList[list -> index], input);
+    list -> index++;
+    return;
+}
+
 _Bool has_been_used(char input[], struct user plr) {                           // check if current input is present in previously used words
         
     int i;
     for (i = 0; i < sizeof(plr.index - 1); ++i) {
-        if (strncmp(input, plr->wordList[i], strlen(input)) == 0) {
+        if (strncmp(input, plr.wordList[i], strlen(input)) == 0) {
             return true;
         }
     }
@@ -76,7 +82,7 @@ void find_valid_words(struct wordList *list, FILE *pointer, char *letters, _Bool
         fgets(buffer_in, 100, pointer);                                      // get first word in the list
         
         while (!feof(pointer)) {
-            register_word(buffer_in, list);                                    // add current word to the list
+            register_word2(buffer_in, list);                                    // add current word to the list
             fgets(buffer_in, 100, pointer);
             currIndex++;
         }
@@ -88,7 +94,7 @@ void find_valid_words(struct wordList *list, FILE *pointer, char *letters, _Bool
             char firstLetter = buffer_in[0] - 32;
             if (strchr(letters, firstLetter) != NULL) {                      // if first character is in the alphabet
                 if (check_letters(buffer_in, letters) && !(has_been_used(buffer_in, list))) {
-                    register_word(buffer_in, list);                            // add current word to the list
+                    register_word2(buffer_in, list);                            // add current word to the list
                 }
             }
             fgets(buffer_in, 100, pointer);
