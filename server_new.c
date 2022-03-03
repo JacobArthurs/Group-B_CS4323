@@ -231,7 +231,7 @@ int main(int argc , char *argv[])
                             server(plr[player], validWords[player]);
                             while(plr.skipCount < 3){//client always goes first in singleplayer
                                 if(plr[player].skipCount == 2){
-                                    plr[player].currentWord = "";
+                                    strcpy(plr[player].currentWord, "");
                                 }
                                 print_game_status(&plr[player].wordList, plr[player], plr[player].randomAlphabets);//will be changed to only print out the turn player menu
                                 while(true){//need to adjust this so that it only waits 4 minutes
@@ -261,6 +261,10 @@ int main(int argc , char *argv[])
                                 }
                                 if(plr[player].skipCount == 3){
                                     break;
+                                }
+                                else if(plr[player].skipCount == 2){
+                                    strcpy(plr[player].currentWord, "");
+                                    strcpy(input, "");
                                 }
                                 generate_opponent_word(plr[player], plr[player].currentWord, &validWords[player])//need to write gameOpponent
                                 if(strcmp(plr[player].currentWord, input) == 0){
