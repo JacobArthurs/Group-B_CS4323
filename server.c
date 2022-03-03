@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void server(plr, validWords){
+void server(struct user plr, struct wordList validWords){
     //Allocate array to hold 10 file names
     char **fileNames = malloc(sizeof(int) * 11);
     //Allocate each cell in filesnames array to hold 21 characters

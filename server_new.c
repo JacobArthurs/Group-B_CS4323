@@ -45,7 +45,7 @@ int main(int argc , char *argv[])
     int second_player;
     int single_player;
     struct user plr[3];
-    struct wordList validWords;
+    struct wordList validWords[3];
     
     fd_set readfds;
     
@@ -224,6 +224,8 @@ int main(int argc , char *argv[])
                             plr[player].lastName = recv(plr[player].clientpid,buffer,1024,0);
                             country(plr[player].clientpid);
                             plr[player].country = recv(plr[player].clientpid,buffer,1024,0);
+                            server(plr[player], validWords[player]);
+
                             while(true){//unmade game at the moment
 
 
