@@ -43,8 +43,9 @@ int main(int argc , char *argv[])
     int single = 99;
     int first_player;
     int second_player;
-    int single_player;
-    int spGR[2];
+    int single_player[3];
+    int spGR[3];
+    char *singlegame_message[3];
     
     fd_set readfds;
     
@@ -204,10 +205,10 @@ int main(int argc , char *argv[])
                                     send(client_socket_init[i], mes, strlen(mes), 0);
                                     if (single == 99) {
                                         single = i;
-                                        single_player = single;
+                                        single_player[0] = single;
                                     }
-                                    char *singlegame_message = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
-                                    send(client_socket_init[single_player], singlegame_message, strlen(singlegame_message), 0);
+                                    *singlegame_message[0] = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
+                                    send(client_socket_init[single_player[0]], singlegame_message[0], strlen(singlegame_message[0]), 0);
                                     break;
                                     //add running game
                                 }
@@ -230,10 +231,10 @@ int main(int argc , char *argv[])
                                             send(client_socket_init[i], mes, strlen(mes), 0);
                                             if (single == 99) {
                                                 single = i;
-                                                single_player = single;
+                                                single_player[1] = single;
                                             }
-                                            char *singlegame_message = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
-                                            send(client_socket_init[single_player], singlegame_message, strlen(singlegame_message), 0);
+                                            *singlegame_message[1] = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
+                                            send(client_socket_init[single_player[1]], singlegame_message[1], strlen(singlegame_message[1]), 0);
                                             break;
                                             //add running game
                                         }
@@ -243,6 +244,7 @@ int main(int argc , char *argv[])
                                 }
                                 else if(spGR[1] > 0){
                                     if(fork2 == 0){
+                                        spGR[2] = 1;
                                         while(1){ // Keep State (Don't Really Need)
                                             printf("Player[%i]: Entering Single Player Game\n", i);
                                             printf("Child[%d] Parent[%d]\n", getpid(), getppid());
@@ -252,13 +254,14 @@ int main(int argc , char *argv[])
                                             send(client_socket_init[i], mes, strlen(mes), 0);
                                             if (single == 99) {
                                                 single = i;
-                                                single_player = single;
+                                                single_player[2] = single;
                                             }
-                                            char *singlegame_message = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
-                                            send(client_socket_init[single_player], singlegame_message, strlen(singlegame_message), 0);
+                                            *singlegame_message[2] = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
+                                            send(client_socket_init[single_player[2]], singlegame_message[2], strlen(singlegame_message[2]), 0);
                                             break;
                                             //add running game
                                         }
+                                        spGR[2] = 0;
                                     }
                                   //  kill(/*child process of fork2*/);
                                 }
