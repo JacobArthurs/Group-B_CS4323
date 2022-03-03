@@ -213,11 +213,11 @@ int main(int argc , char *argv[])
                                 }
                                 spGR[0] = 0;
                             }
-                            kill(/*fork1 child process*/);
+                           // kill(/*fork1 child process*/);
                         }
                         else if(spGR[0] > 0){
                             if(fork1 > 0){
-                                fork2 = fork();
+                                int fork2 = fork();
                                 if(spGR[1] == 0){
                                     if(fork2 > 0){
                                         spGR[1] = 1;
@@ -239,7 +239,7 @@ int main(int argc , char *argv[])
                                         }
                                         spGR[1] = 0;
                                     }
-                                    kill(/*parent process of fork2*/);
+                                  //  kill(/*parent process of fork2*/);
                                 }
                                 else if(spGR[1] > 0){
                                     if(fork2 == 0){
@@ -260,16 +260,16 @@ int main(int argc , char *argv[])
                                             //add running game
                                         }
                                     }
-                                    kill(/*child process of fork2*/);
+                                  //  kill(/*child process of fork2*/);
                                 }
-                                else{
+                              // else{
                                     //error call for variable spGR[1] has invalid state
-                                }
+                              //  }
                             }
                         }
-                        else{
+                       // else{
                             //error call for variable spGR[0] has invalid state
-                        }
+                      //  }
                     }
 
 
