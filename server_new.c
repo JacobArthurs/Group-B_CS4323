@@ -45,6 +45,7 @@ int main(int argc , char *argv[])
     int second_player;
     int single_player;
     struct user plr[3];
+    struct wordList validWords;
     
     fd_set readfds;
     
@@ -196,15 +197,15 @@ int main(int argc , char *argv[])
                             printf("Child[%d] Parent[%d]\n", getpid(), getppid());
                             int player;
                             if(plr[0].clientpid == 0){
-                                plr[0].clientpid = getpid();
+                                plr[0].clientpid = client_socket_init[i];
                                 player = 0;
                             }
                             else if(plr[1] == 0){
-                                plr[1].clientpid = getpid();
+                                plr[1].clientpid = client_socket_init[i];
                                 player = 1;
                             }
                             else{
-                                plr[2].clientpid = getpid();
+                                plr[2].clientpid = client_socket_init[i];
                                 player = 2;
                             }
                             message = "Entering Single Player Game\n\0";
@@ -218,8 +219,11 @@ int main(int argc , char *argv[])
                             char *singlegame_message = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
                             send(client_socket_init[single_player], singlegame_message, strlen(singlegame_message), 0);
                             firstname(plr[player].clientpid);
-
-
+                            plr[player].firstName = recv(plr[player].clientpid,buffer,1024,0);
+                            lastname(plr[player].clientpid);
+                            plr[player].lastName = recv(plr[player].clientpid,buffer,1024,0);
+                            country(plr[player].clientpid);
+                            plr[player].country = recv(plr[player].clientpid,buffer,1024,0);
                             while(true){//unmade game at the moment
 
 
