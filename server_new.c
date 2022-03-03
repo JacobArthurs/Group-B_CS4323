@@ -215,7 +215,7 @@ int main(int argc , char *argv[])
                                         single = i;
                                         single_player[0] = single;
                                     }
-                                    *singlegame_message[0] = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
+                                    singlegame_message[0] = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
                                     send(client_socket_init[single_player[0]], singlegame_message[0], strlen(singlegame_message[0]), 0);
                                     //break;
                                     //add running game
@@ -235,10 +235,10 @@ int main(int argc , char *argv[])
                                     send(client_socket_init[i], mes, strlen(mes), 0);
                                     if (single == 99) {
                                         single = i;
-                                        single_player[0] = single;
+                                        single_player[1] = single;
                                     }
-                                    *singlegame_message[0] = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
-                                    send(client_socket_init[single_player[0]], singlegame_message[0], strlen(singlegame_message[0]), 0);
+                                    singlegame_message[1] = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
+                                    send(client_socket_init[single_player[1]], singlegame_message[1], strlen(singlegame_message[1]), 0);
                                     //break;
                                     //add running game
                                 }
@@ -259,14 +259,14 @@ int main(int argc , char *argv[])
                                         single = i;
                                         single_player[0] = single;
                                     }
-                                    *singlegame_message[0] = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
-                                    send(client_socket_init[single_player[0]], singlegame_message[0], strlen(singlegame_message[0]), 0);
+                                    singlegame_message[2] = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
+                                    send(client_socket_init[single_player[2]], singlegame_message[2], strlen(singlegame_message[2]), 0);
                                     //break;
                                     //add running game
                                 }
                             }
                             kill(fork1,SIGKILL);
-                            spGR[2] == 0;
+                            spGR[0] == 0;
                         }
                     }
 
