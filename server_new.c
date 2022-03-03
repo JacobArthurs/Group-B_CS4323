@@ -248,9 +248,9 @@ int main(int argc , char *argv[])
                                     }
                                     else if(is_word_valid(input, plr[player].randomAlphabets, plr[player],
                                             &validWords[player], false, plr[player].currentWord[strlen(plr[player].currentWord)-1])){
-                                        plr[player].currentWord = input;//input
-                                        register_points(plr[player], plr[player].currentWord, validWords[player]);
+                                        register_points(plr[player], input, validWords[player]);
                                         register_word(plr[player].currentWord,plr[player].wordList);
+                                        plr[player].currentWord = input;//input
                                         plr[player].skipCount = 0;
                                         plr[player].validWords = 0;
                                     }
