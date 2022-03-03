@@ -28,7 +28,7 @@ struct user {
 };
 
 void firstname(int pid){
-    char message[] = "Please enter your first name: \n\0";
+    char *message = "Please enter your first name: \n\0";
     send(pid, message, strlen(message), 0);
 }
 
