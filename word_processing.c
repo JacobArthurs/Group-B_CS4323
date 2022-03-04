@@ -334,114 +334,114 @@ void generate_oppponent_word(struct user player, char prevWord[], struct wordLis
     }
 }
 
-void start_game(void) {
-    
-    char  user_input[100];                                 // store user's words in
-    char  firstLine[100];                                  // store the alphabet for every file
-    int   randInt;
-    _Bool  gameTurn = false;                                // used to switch from one player to another
-    _Bool  isGameOver = false;
-    char  nextChar;
-    _Bool consecPasses = false;
-    _Bool allowCharPick = false;                                  // denotes whether players get to choose a random character
-    
-    wordList usedWords = {.words = { {} } };                       // Instantiate a list of words struct to use in this game run
-    wordList validWords = {.words = { {} } };                      // create list of all valid words in input file and dictionary
-    alphabet alpha = {.letters = {}};                               // Instantiate alphabet struct
-    scoreCard scoreCard = {0, 0, 0, 0};                            // Instantiate a score card for this game
-
-// ---------------------------------------------------Create a list of all possible words-----------------------------------------------------------------------------------------
-    FILE *inputFPtr;
-    FILE *dictFPtr;
-    
-    inputFPtr = fopen("/Users/miguelsoto/Documents/OSU/04 Operating Systems/Scratch/scratch/scratch/input_01.txt", "r");
-    dictFPtr = fopen("/Users/miguelsoto/Documents/OSU/04 Operating Systems/Scratch/scratch/scratch/dictionary.txt", "r");
-    if (inputFPtr == NULL || dictFPtr == NULL) {                                // basic error check for file opening
-        perror("Failed to open the file");
-        return 1;
-    }
-    
-    fgets(firstLine, 100, inputFPtr);
-    set_alphabet(&alpha, firstLine);                                            // get alphabet from first line in input file
-    
-    find_valid_words(&validWords, inputFPtr, firstLine, &alpha, true);             // get all possible words from the input file
-    fclose(inputFPtr);
-
-    find_valid_words(&validWords, dictFPtr, firstLine, &alpha, false);             // get all possible words from the dictionary file
-    fclose(dictFPtr);
-    
-    // print_word_list(&validWords);                                                                            // use to confirm all possible  words registered in validWords
-    
-// -------------------------------------------------- Obtain inputs from the user ---------------------------------------------------------------------------------------------
-    
-    randInt = rand() % (strlen(firstLine) - 3);
-    nextChar = firstLine[randInt];
-    printf("Player 1 - Enter a word using char: %c   Alphabet: %s", nextChar, alpha.letters);
-    scanf("%s", user_input);
-    
-    while (!isGameOver) {
-        
-        if (hasPassed(user_input, &scoreCard, gameTurn)) {                            // check if user is passing this turn
-            
-            if (scoreCard.passes_1 == 2 && scoreCard.passes_2 == 2) {                    // if we have had two consecutive passes from both players
-                printf("The game is over. \n");                                             // end the game
-                isGameOver = true;
-                break;
-            }
-            if (scoreCard.passes_1 == 1 && scoreCard.passes_2 == 1) {
-                allowCharPick = true;                                               // if both players have passed, allow next player to pick a character
-            }
-            
-            consecPasses = true;                                                    // note the fact that one player has started passing
-            gameTurn = !gameTurn;
-        }
-        else if (is_word_valid(user_input, firstLine, &usedWords, &validWords, allowCharPick, nextChar)) {
-            if (!gameTurn) {
-                register_points(&scoreCard, 1, user_input, &validWords);                             // register scores for player one
-                gameTurn = true;
-                consecPasses = false;
-                allowCharPick = false;
-                scoreCard.passes_1 = 0;                                                        // reset the pass count
-                scoreCard.badInputs_1 += 0;                                                     // reset the invalid input count
-            }
-            else {
-                register_points(&scoreCard, 2, user_input, &validWords);                             // register scores for player two
-                gameTurn = false;
-                consecPasses = false;
-                allowCharPick = false;
-                scoreCard.passes_1 = 0;                                              // reset the pass count
-                scoreCard.badInputs_2 += 0;                                           // reset the invalid input count
-            }
-            register_word(user_input, &usedWords);                                     // register word in usedWords for this game
-        }
-        else if (!has_been_used(user_input, &usedWords)) {                               // deduct points for invalid words
-            printf("Invalid word. \n");
-            if (!gameTurn) {
-                register_points(&scoreCard, 1, "invalid", &validWords);
-                scoreCard.badInputs_1 += 1;
-            }
-            else {
-                register_points(&scoreCard, 2, "invalid", &validWords);
-                scoreCard.badInputs_2 += 1;
-            }
-        }
-        else if (has_been_used(user_input, &usedWords)) {                                // deduct points for words already used
-            printf("This word has already been used. \n");
-            if (!gameTurn) {
-                register_points(&scoreCard, 1, "used", &validWords);
-                scoreCard.badInputs_1 += 1;                                            // register the bad input from user one
-            }
-            else {
-                register_points(&scoreCard, 2, "used", &validWords);
-                scoreCard.badInputs_2 += 1;                                            // register bad input from user two
-            }
-        }
-        
-        print_game_status(&usedWords, gameTurn, allowCharPick, scoreCard, firstLine);    // print the current status of the game
-        
-        scanf("%s", user_input);
-        
-    }
-
-}
+//void start_game(void) {
+//
+//    char  user_input[100];                                 // store user's words in
+//    char  firstLine[100];                                  // store the alphabet for every file
+//    int   randInt;
+//    _Bool  gameTurn = false;                                // used to switch from one player to another
+//    _Bool  isGameOver = false;
+//    char  nextChar;
+//    _Bool consecPasses = false;
+//    _Bool allowCharPick = false;                                  // denotes whether players get to choose a random character
+//
+//    wordList usedWords = {.words = { {} } };                       // Instantiate a list of words struct to use in this game run
+//    wordList validWords = {.words = { {} } };                      // create list of all valid words in input file and dictionary
+//    alphabet alpha = {.letters = {}};                               // Instantiate alphabet struct
+//    scoreCard scoreCard = {0, 0, 0, 0};                            // Instantiate a score card for this game
+//
+//// ---------------------------------------------------Create a list of all possible words-----------------------------------------------------------------------------------------
+//    FILE *inputFPtr;
+//    FILE *dictFPtr;
+//
+//    inputFPtr = fopen("/Users/miguelsoto/Documents/OSU/04 Operating Systems/Scratch/scratch/scratch/input_01.txt", "r");
+//    dictFPtr = fopen("/Users/miguelsoto/Documents/OSU/04 Operating Systems/Scratch/scratch/scratch/dictionary.txt", "r");
+//    if (inputFPtr == NULL || dictFPtr == NULL) {                                // basic error check for file opening
+//        perror("Failed to open the file");
+//        return 1;
+//    }
+//
+//    fgets(firstLine, 100, inputFPtr);
+//    set_alphabet(&alpha, firstLine);                                            // get alphabet from first line in input file
+//
+//    find_valid_words(&validWords, inputFPtr, firstLine, &alpha, true);             // get all possible words from the input file
+//    fclose(inputFPtr);
+//
+//    find_valid_words(&validWords, dictFPtr, firstLine, &alpha, false);             // get all possible words from the dictionary file
+//    fclose(dictFPtr);
+//
+//    // print_word_list(&validWords);                                                                            // use to confirm all possible  words registered in validWords
+//
+//// -------------------------------------------------- Obtain inputs from the user ---------------------------------------------------------------------------------------------
+//
+//    randInt = rand() % (strlen(firstLine) - 3);
+//    nextChar = firstLine[randInt];
+//    printf("Player 1 - Enter a word using char: %c   Alphabet: %s", nextChar, alpha.letters);
+//    scanf("%s", user_input);
+//
+//    while (!isGameOver) {
+//
+//        if (hasPassed(user_input, &scoreCard, gameTurn)) {                            // check if user is passing this turn
+//
+//            if (scoreCard.passes_1 == 2 && scoreCard.passes_2 == 2) {                    // if we have had two consecutive passes from both players
+//                printf("The game is over. \n");                                             // end the game
+//                isGameOver = true;
+//                break;
+//            }
+//            if (scoreCard.passes_1 == 1 && scoreCard.passes_2 == 1) {
+//                allowCharPick = true;                                               // if both players have passed, allow next player to pick a character
+//            }
+//
+//            consecPasses = true;                                                    // note the fact that one player has started passing
+//            gameTurn = !gameTurn;
+//        }
+//        else if (is_word_valid(user_input, firstLine, &usedWords, &validWords, allowCharPick, nextChar)) {
+//            if (!gameTurn) {
+//                register_points(&scoreCard, 1, user_input, &validWords);                             // register scores for player one
+//                gameTurn = true;
+//                consecPasses = false;
+//                allowCharPick = false;
+//                scoreCard.passes_1 = 0;                                                        // reset the pass count
+//                scoreCard.badInputs_1 += 0;                                                     // reset the invalid input count
+//            }
+//            else {
+//                register_points(&scoreCard, 2, user_input, &validWords);                             // register scores for player two
+//                gameTurn = false;
+//                consecPasses = false;
+//                allowCharPick = false;
+//                scoreCard.passes_1 = 0;                                              // reset the pass count
+//                scoreCard.badInputs_2 += 0;                                           // reset the invalid input count
+//            }
+//            register_word(user_input, &usedWords);                                     // register word in usedWords for this game
+//        }
+//        else if (!has_been_used(user_input, &usedWords)) {                               // deduct points for invalid words
+//            printf("Invalid word. \n");
+//            if (!gameTurn) {
+//                register_points(&scoreCard, 1, "invalid", &validWords);
+//                scoreCard.badInputs_1 += 1;
+//            }
+//            else {
+//                register_points(&scoreCard, 2, "invalid", &validWords);
+//                scoreCard.badInputs_2 += 1;
+//            }
+//        }
+//        else if (has_been_used(user_input, &usedWords)) {                                // deduct points for words already used
+//            printf("This word has already been used. \n");
+//            if (!gameTurn) {
+//                register_points(&scoreCard, 1, "used", &validWords);
+//                scoreCard.badInputs_1 += 1;                                            // register the bad input from user one
+//            }
+//            else {
+//                register_points(&scoreCard, 2, "used", &validWords);
+//                scoreCard.badInputs_2 += 1;                                            // register bad input from user two
+//            }
+//        }
+//
+//        print_game_status(&usedWords, gameTurn, allowCharPick, scoreCard, firstLine);    // print the current status of the game
+//
+//        scanf("%s", user_input);
+//
+//    }
+//
+//}
 
