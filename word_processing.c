@@ -1,4 +1,9 @@
+// Group B
 // Miguelangel Pineda Soto
+// miguep@okstate.edu
+// 2-27-2022
+// All word processing functionality required of the game in the description document is addressed within this file. Will be called from
+// server and client files during execution of the game. I also contributed to implementation in separate files and debugging.
 
 #include <stdio.h>
 #include <stdlib.h>
