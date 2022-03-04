@@ -76,7 +76,7 @@ _Bool has_been_used2(char input[], struct wordList *list) {                     
         
     int i;
     for (i = 0; i < sizeof(list -> index - 1); ++i) {
-        if (strncmp(input, list -> wordList[i], strlen(input)) == 0) {
+        if (strncmp(input, list -> words[i], strlen(input)) == 0) {
             return true;
         }
     }

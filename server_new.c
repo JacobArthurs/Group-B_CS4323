@@ -236,7 +236,7 @@ int main(int argc , char *argv[])
                                 if(plr[player].skipCount == 2){
                                     strcpy(plr[player].currentWord, "");
                                 }
-                                print_game_status(plr[player], plr[player].randomAlphabets);//ask about later
+                                print_game_status(plr[player]);//ask about later
                                 char input[20];
                                 while(true){//need to adjust this so that it only waits 4 minutes
                                     if (plr[player].validWords == 3){
@@ -247,13 +247,12 @@ int main(int argc , char *argv[])
                                     }
                                     recv(plr[player].clientpid,buffer,1024,0);
                                     strcpy(input, buffer);
-                                    if(strncmp(input, "Pass", strlen(input)) == 0)){
+                                    if(strncmp(input, "Pass", strlen(input)) == 0){
                                         plr[player].skipCount = plr[player].skipCount + 1;
                                         plr[player].validWords = 0;
                                         strcpy(input, plr[player].currentWord);
                                         break;
-                                    }
-                                    else if(is_word_valid(input, plr[player].randomAlphabets, plr[player],
+                                    } else if(is_word_valid(input, plr[player].randomAlphabets, plr[player],
                                             &validWords[player], false, plr[player].currentWord[strlen(plr[player].currentWord)-1])){
                                         register_points(plr[player], input, &validWords[player]);
                                         register_word(input,&plr[player]);
@@ -261,14 +260,12 @@ int main(int argc , char *argv[])
                                         plr[player].skipCount = 0;
                                         plr[player].validWords = 0;
                                         break;
-                                    }
-                                    else if(has_been_used(input, plr[player])){
+                                    } else if(has_been_used(input, plr[player])){
                                         strcpy(input, "used");
                                         register_points(plr[player], input, &validWords[player]);
                                         plr[player].validWords = plr[player].validWords + 1;
                                         strcpy(input, plr[player].currentWord);
-                                    }
-                                    else{
+                                    } else{
                                         strcpy(input, "invalid");
                                         register_points(plr[player], input, &validWords[player]);
                                         plr[player].validWords = plr[player].validWords + 1;
@@ -277,8 +274,7 @@ int main(int argc , char *argv[])
                                 }
                                 if(plr[player].skipCount == 3){
                                     break;
-                                }
-                                else if(plr[player].skipCount == 2){
+                                } else if(plr[player].skipCount == 2){
                                     strcpy(plr[player].currentWord, "");
                                     strcpy(input, "");
                                 }
@@ -286,10 +282,9 @@ int main(int argc , char *argv[])
                                 
                                 if((strncmp(plr[player].currentWord, input, strlen(input)) == 0)){
                                     register_points(plr[player], plr[player].currentWord, &validWords[player]);
-                                    register_word(plr[player].currentWord, plr[player]);
+                                    register_word(plr[player].currentWord, &plr[player]);
                                     plr[player].skipCount = 0;
-                                }
-                                else{//bot passed
+                                } else{//bot passed
                                     plr[player].skipCount = plr[player].skipCount + 1;
                                 }
                             }
