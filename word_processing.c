@@ -56,7 +56,7 @@ void register_word(char input[], struct user *list ) {                          
 }
 
 void register_word2(char input[], struct wordList *list){
-    strcpy(list->wordList[list -> index], input);
+    strcpy(list->words[list -> index], input);
     list -> index++;
     return;
 }
@@ -75,8 +75,8 @@ _Bool has_been_used(char input[], struct user plr) {                           /
 _Bool has_been_used2(char input[], struct wordList *list) {                           // check if current input is present in previously used words
         
     int i;
-    for (i = 0; i < sizeof(list.index - 1); ++i) {
-        if (strncmp(input, list.wordList[i], strlen(input)) == 0) {
+    for (i = 0; i < sizeof(list -> index - 1); ++i) {
+        if (strncmp(input, list -> wordList[i], strlen(input)) == 0) {
             return true;
         }
     }
@@ -307,7 +307,7 @@ void print_game_status(struct user player , char firstLine[]) {
     printf("Usable Letters: %s\n",player.randomAlphabets);
     printf("Your Current Score: %d\n",player.score);
     printf("Your Opponents Current Score: %d\n",player.opponentScore);
-    printf("Starting Character of the next word: %s\n",player.currentWord[strlen(player.currentWord)-1]);
+    printf("Starting Character of the next word: %c\n",player.currentWord[strlen(player.currentWord)-1]);
     printf("Please input one appropraite word: \n");
 
     // TODO:
@@ -319,10 +319,10 @@ void generate_oppponent_word(struct user player, char prevWord[], struct wordLis
     _Bool passing = true;
     
     // Cycle through valid words' input file portion only for opponent moves
-    for (int i = 0 ; i < validWords.index; ++i) {
+    for (int i = 0 ; i < validWords -> index; ++i) {
         // if the word has not been used and is valid based on the previous word, copy the string to the external oppWord char array (String)
-        if (!has_been_used(validWords.words[i],player) && is_word_valid(validWords.words[i], player.randomAlphabets, player, validWords, false, prevWord[strlen(prevWord - 1)])) {
-            strcpy(player.currentWord, validWords.words[i]);
+        if (!has_been_used(validWords -> words[i],player) && is_word_valid(validWords -> words[i], player.randomAlphabets, player, validWords, false, prevWord[strlen(prevWord - 1)])) {
+            strcpy(player.currentWord, validWords -> words[i]);
             passing = false;
             break;
         }
