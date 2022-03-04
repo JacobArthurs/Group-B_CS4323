@@ -3,7 +3,7 @@
 #include <string.h>
 
 
-void server(struct user plr, struct wordList validWords){
+void server(struct user *plr, struct wordList *validWords){
     //Allocate array to hold 10 file names
     char **fileNames = malloc(sizeof(int) * 50);
     //Allocate each cell in filesnames array to hold 21 characters
@@ -46,7 +46,8 @@ void server(struct user plr, struct wordList validWords){
     find_valid_words(&validWords, fptr_dict, letters, false);      // add all valid words in the dictionary file to validWords list
     
     // fill in user randomLetters
-    strcpy(plr.randomAlphabets, letters);
+    plr->randomAlphabets = malloc(7);
+    strcpy(plr->randomAlphabets, letters);
     
     // printf("Available letters: %s\n", letters);
 
