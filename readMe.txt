@@ -18,5 +18,9 @@ processing of the game has been tested and found to be in working condition. Bot
 Modes make use of the chat server and communicate with the scoreboard file that ultimately keeps track of
 The highest performers in each game mode, respectively. 
 
+chat_client and chat_server were built using dummy sockets. The piped_client and piped_server were
+The newer implementation we intended to use for the game to meet the requirements established by 
+The instructor. 
+
  
 
