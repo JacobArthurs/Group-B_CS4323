@@ -195,7 +195,7 @@ int main(int argc , char *argv[])
                     strcat(mes, buffer);            // Reads buffer into mes
                     printf("Player[%i] -> typed: %s", i, mes);
 
-                    if (!strcmp(mes, "1\n")) { //Entering Single Player Game
+                    if (!(strncmp(mes, "1\n", strlen(mes)) == 0)) { //Entering Single Player Game
                         while(1){ // Keep State (Don't Really Need)
                             printf("Player[%i]: Entering Single Player Game\n", i);
                             printf("Child[%d] Parent[%d]\n", getpid(), getppid());
@@ -243,7 +243,7 @@ int main(int argc , char *argv[])
                                         break;
                                     }
                                     input = recv(plr[player].clientpid,buffer,1024,0);
-                                    if(strcmp(input, "Pass")){
+                                    if(strncmp(input, "Pass", strlen(input)) == 0)){
                                         plr[player].skipCount = plr[player].skipCount + 1;
                                         plr[player].validWords = 0;
                                         input = plr[player].currentWord;
@@ -278,7 +278,8 @@ int main(int argc , char *argv[])
                                     strcpy(input, "");
                                 }
                                 generate_opponent_word(plr[player], plr[player].currentWord, &validWords[player])//need to write gameOpponent
-                                if(strcmp(plr[player].currentWord, input) == 0){
+                                
+                                if((strncmp(plr[player].currentWord, input, strlen(input)) == 0)){
                                     register_points(plr[player], plr[player].currentWord, validWords[player]);
                                     register_word(plr[player].currentWord, plr[player]);
                                     plr[player].skipCount = 0;
@@ -292,7 +293,7 @@ int main(int argc , char *argv[])
                         }
                     }
 
-                    if (!strcmp(mes, "2\n")) { //Entering Single Player Game
+                    if (!(strncmp(mes, "2\n", strlen(mes)) == 0)) { //Entering Single Player Game
                         while(1){
                             printf("Player[%i]: Entering Multi-Player Player Game\n", i);
                             printf("Child[%d] Parent[%d]\n", getpid(), getppid());
@@ -330,8 +331,8 @@ int main(int argc , char *argv[])
                             break;
                         }
                     }
-
-                    if (!strcmp(mes, "3\n")) { // Exit Game
+                    
+                    if (!(strncmp(mes, "3\n", strlen(mes)) == 0)) { // Exit Game
                         printf("Player[%i]: Exiting\n", i);
                         printf("Child[%d] Parent[%d]\n", getpid(), getppid());
                         getpeername(sd , (struct sockaddr*)&address , (socklen_t*)&addrlen); 
