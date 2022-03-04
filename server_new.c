@@ -235,15 +235,18 @@ int main(int argc , char *argv[])
                                 }
                                 print_game_status(plr[player], );//ask about later
                                 while(true){//need to adjust this so that it only waits 4 minutes
-                                    char input[20] = recv(plr[player].clientpid,buffer,1024,0);
+                                    char input[20];
                                     if (plr[player].validWords == 3){
                                         plr[player].skipCount = plr[player].skipCount + 1;
                                         plr[player].validWords = 0;
+                                        input = plr[player].currentWord;
                                         break;
                                     }
-                                    else if(strcmp(input, "Pass")){
+                                    input = recv(plr[player].clientpid,buffer,1024,0);
+                                    if(strcmp(input, "Pass")){
                                         plr[player].skipCount = plr[player].skipCount + 1;
                                         plr[player].validWords = 0;
+                                        input = plr[player].currentWord;
                                         break;
                                     }
                                     else if(is_word_valid(input, plr[player].randomAlphabets, plr[player],
@@ -253,6 +256,7 @@ int main(int argc , char *argv[])
                                         plr[player].currentWord = input;//input
                                         plr[player].skipCount = 0;
                                         plr[player].validWords = 0;
+                                        break;
                                     }
                                     else if(has_been_used(input, plr[player])){
                                         input = "used";
@@ -263,6 +267,7 @@ int main(int argc , char *argv[])
                                         input = "invalid";
                                         register_points(plr[player], input, validWords[player]);
                                         plr[player].validWords = plr[player].validWords + 1;
+                                        input = current;
                                     }
                                 }
                                 if(plr[player].skipCount == 3){

@@ -187,11 +187,11 @@ _Bool is_word_valid(char input[], char alphabet[], struct user plr, struct wordL
         && is_valid_start(input, randChar)) {
         return true;
     }
-    else if (check_letters(input, alphabet) && !has_been_used(input, usedWords)
+    else if (check_letters(input, alphabet) && !has_been_used(input, plr)
            && is_postfix(input, prevWord) && !userCharPick) {
         return true;
     }
-    else if (check_letters(input, alphabet) && !has_been_used(input, usedWords) && userCharPick) {              // if both players passed
+    else if (check_letters(input, alphabet) && !has_been_used(input, plr) && userCharPick) {              // if both players passed
         return true;
     }
     return false;
@@ -238,22 +238,22 @@ _Bool is_word_valid(char input[], char alphabet[], struct user plr, struct wordL
 void register_points(struct user card, char input[], struct wordList *validWords) {                // register points in score card
     int wordLen = (int) strlen(input);
     
-    if (playerNum == 1) {
+//    if (playerNum == 1) {
         if (strncmp(input, "invalid", strlen(input)) == 0) {
-            card->score = (card->score - 1 < 0) ? 0: card->score - 1; }
+            card.score = (card.score - 1 < 0) ? 0: card.score - 1; }
         else if (strncmp(input, "used", strlen(input)) == 0) {
-            card->score = (card->score - 2 < 0 || card->score - 1 <= 0) ? 0: card->score - 2; }
+            card.score = (card.score - 2 < 0 || card.score - 1 <= 0) ? 0: card.score - 2; }
         else if (wordLen == 3 || wordLen == 4) {
-            card->score +=  (is_bonus_word(input, validWords)) ? 6: 1;}
+            card.score +=  (is_bonus_word(input, validWords)) ? 6: 1;}
         else if (wordLen == 5) {
-            card->score +=  (is_bonus_word(input, validWords)) ? 7: 2;}
+            card.score +=  (is_bonus_word(input, validWords)) ? 7: 2;}
         else if (wordLen == 6) {
-            card->score +=  (is_bonus_word(input, validWords)) ? 8: 3;}
+            card.score +=  (is_bonus_word(input, validWords)) ? 8: 3;}
         else if (wordLen == 7) {
-            card->score +=  (is_bonus_word(input, validWords)) ? 10: 5;}
+            card.score +=  (is_bonus_word(input, validWords)) ? 10: 5;}
         else if (wordLen >= 8) {
-            card->score +=  (is_bonus_word(input, validWords)) ? 16: 11;}
-    }
+            card.score +=  (is_bonus_word(input, validWords)) ? 16: 11;}
+//    }
 }
 
 // DO NOT DELETE
@@ -302,12 +302,12 @@ void print_game_status(struct user player , char firstLine[]) {
     char nextChar;
     char prevWord[100];
 
-    print_word_list(player.wordList);
+    print_word_list(player);
     
     printf("Usable Letters: %s\n",player.randomAlphabets);
     printf("Your Current Score: %d\n",player.score);
     printf("Your Opponents Current Score: %d\n",player.opponentScore);
-    printf("Starting Character of the next word: %s\n",player.currentWord[strlen(currentWord)-1]);
+    printf("Starting Character of the next word: %s\n",player.currentWord[strlen(player.currentWord)-1]);
     printf("Please input one appropraite word: \n");
 
     // TODO:
@@ -315,21 +315,22 @@ void print_game_status(struct user player , char firstLine[]) {
 }
 
 // NOTE: in order to return a string from this method it will need to be passed a string pointer from the caller
-void generate_oppponent_word(struct user player, char prevWord[], struct wordList validWords) {
+void generate_oppponent_word(struct user player, char prevWord[], struct wordList *validWords) {
     _Bool passing = true;
     
     // Cycle through valid words' input file portion only for opponent moves
-    for (int i = 0 ; i < player -> index; ++i) {
+    for (int i = 0 ; i < validWords.index; ++i) {
         // if the word has not been used and is valid based on the previous word, copy the string to the external oppWord char array (String)
-        if (!has_been_used(player->wordList[i][0]) && is_word_valid(player->wordList[i][0], player.randomAlphabets, player.wordList, validWords, prevword, prevWord[strlen(prevWord - 1)])) {
-            strcpy(player.currentWord, player->usedWords[i][0])
+        if (!has_been_used(validWords.words[i],player) && is_word_valid(validWords.words[i], player.randomAlphabets, player, validWords, false, prevWord[strlen(prevWord - 1)])) {
+            strcpy(player.currentWord, validWords.words[i]);
             passing = false;
             break;
         }
     }
     // If no valid word was found within the threshold, submit a pass for this round
     if (passing) {
-        strcpy(oppWord, "Pass");
+    //    strcpy(oppWord, "Pass");
+        return;
     }
 }
 
