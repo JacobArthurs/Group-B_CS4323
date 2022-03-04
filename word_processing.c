@@ -298,7 +298,7 @@ void register_points(struct user card, char input[], struct wordList *validWords
 //    }
 //}
 
-void print_game_status(struct user player , char firstLine[]) {
+void print_game_status(struct user player) {
     char nextChar;
     char prevWord[100];
 
