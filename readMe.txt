@@ -1,0 +1,17 @@
+Group B - CS 4323
+
+To begin the execution of the game:
+
+
+
+Description: 
+
+Our game begins it execution in main, where a server is called that determines a random file for a game and finds all the
+possible words for that game after the user has determined what kind of game he is playing -- either single or multiplayer. 
+The server also determines the initial character for the current game being played. From this point, each game is sent to
+their ow game room where the chat server controls the natural flow of the game. Each player has a turn to input their next
+word and the word_processing file contains all of the functionality that is required to determine if the current word is 
+in some way a postfix of the previous word, if a player has passed, it provides a method to register words, check whether
+a word is valid, and register both the word and the points associated with it. All requirements for the word processing
+of the game has been tested and foudn to be in working condition. 
+
