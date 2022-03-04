@@ -232,17 +232,17 @@ int main(int argc , char *argv[])
                             recv(plr[player].clientpid,buffer,1024,0);
                             strcpy(plr[player].country,buffer);
                             server(plr[player], validWords[player]);
-                            while(plr.skipCount < 3){//client always goes first in singleplayer
+                            while(plr[player].skipCount < 3){//client always goes first in singleplayer
                                 if(plr[player].skipCount == 2){
                                     strcpy(plr[player].currentWord, "");
                                 }
                                 print_game_status(plr[player], plr[player].randomAlphabets);//ask about later
+                                char input[20];
                                 while(true){//need to adjust this so that it only waits 4 minutes
-                                    char input[20];
                                     if (plr[player].validWords == 3){
                                         plr[player].skipCount = plr[player].skipCount + 1;
                                         plr[player].validWords = 0;
-                                        input = plr[player].currentWord;
+                                        strcpy(input, plr[player].currentWord);
                                         break;
                                     }
                                     recv(plr[player].clientpid,buffer,1024,0);
@@ -250,28 +250,29 @@ int main(int argc , char *argv[])
                                     if(strncmp(input, "Pass", strlen(input)) == 0)){
                                         plr[player].skipCount = plr[player].skipCount + 1;
                                         plr[player].validWords = 0;
-                                        input = plr[player].currentWord;
+                                        strcpy(input, plr[player].currentWord);
                                         break;
                                     }
                                     else if(is_word_valid(input, plr[player].randomAlphabets, plr[player],
                                             &validWords[player], false, plr[player].currentWord[strlen(plr[player].currentWord)-1])){
-                                        register_points(plr[player], input, validWords[player]);
-                                        register_word(input,plr[player]);
-                                        plr[player].currentWord = input;//input
+                                        register_points(plr[player], input, &validWords[player]);
+                                        register_word(input,&plr[player]);
+                                        strcpy(plr[player].currentWord, input);//input
                                         plr[player].skipCount = 0;
                                         plr[player].validWords = 0;
                                         break;
                                     }
                                     else if(has_been_used(input, plr[player])){
-                                        input = "used";
-                                        register_points(plr[player], input, validWords[player]);
+                                        strcpy(input, "used");
+                                        register_points(plr[player], input, &validWords[player]);
                                         plr[player].validWords = plr[player].validWords + 1;
+                                        strcpy(input, plr[player].currentWord);
                                     }
                                     else{
-                                        input = "invalid";
-                                        register_points(plr[player], input, validWords[player]);
+                                        strcpy(input, "invalid");
+                                        register_points(plr[player], input, &validWords[player]);
                                         plr[player].validWords = plr[player].validWords + 1;
-                                        input = current;
+                                        strcpy(input, plr[player].currentWord);
                                     }
                                 }
                                 if(plr[player].skipCount == 3){
@@ -281,10 +282,10 @@ int main(int argc , char *argv[])
                                     strcpy(plr[player].currentWord, "");
                                     strcpy(input, "");
                                 }
-                                generate_opponent_word(plr[player], plr[player].currentWord, &validWords[player])//need to write gameOpponent
+                                generate_oppponent_word(plr[player], plr[player].currentWord, &validWords[player]);//need to write gameOpponent
                                 
                                 if((strncmp(plr[player].currentWord, input, strlen(input)) == 0)){
-                                    register_points(plr[player], plr[player].currentWord, validWords[player]);
+                                    register_points(plr[player], plr[player].currentWord, &validWords[player]);
                                     register_word(plr[player].currentWord, plr[player]);
                                     plr[player].skipCount = 0;
                                 }
