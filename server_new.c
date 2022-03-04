@@ -204,7 +204,7 @@ int main(int argc , char *argv[])
                                 plr[0].clientpid = client_socket_init[i];
                                 player = 0;
                             }
-                            else if(plr[1] == 0){
+                            else if(plr[1].clientpid == 0){
                                 plr[1].clientpid = client_socket_init[i];
                                 player = 1;
                             }
@@ -223,17 +223,20 @@ int main(int argc , char *argv[])
                             char *singlegame_message = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
                             send(client_socket_init[single_player], singlegame_message, strlen(singlegame_message), 0);
                             fname(plr[player].clientpid);
-                            plr[player].firstName = recv(plr[player].clientpid,buffer,1024,0);
+                            recv(plr[player].clientpid,buffer,1024,0);
+                            strcpy(plr[player].firstName,buffer);
                             lname(plr[player].clientpid);
-                            plr[player].lastName = recv(plr[player].clientpid,buffer,1024,0);
+                            recv(plr[player].clientpid,buffer,1024,0);
+                            strcpy(plr[player].lastName,buffer);
                             cnty(plr[player].clientpid);
-                            plr[player].country = recv(plr[player].clientpid,buffer,1024,0);
+                            recv(plr[player].clientpid,buffer,1024,0);
+                            strcpy(plr[player].country,buffer);
                             server(plr[player], validWords[player]);
                             while(plr.skipCount < 3){//client always goes first in singleplayer
                                 if(plr[player].skipCount == 2){
                                     strcpy(plr[player].currentWord, "");
                                 }
-                                print_game_status(plr[player], );//ask about later
+                                print_game_status(plr[player], plr[player].randomAlphabets);//ask about later
                                 while(true){//need to adjust this so that it only waits 4 minutes
                                     char input[20];
                                     if (plr[player].validWords == 3){
