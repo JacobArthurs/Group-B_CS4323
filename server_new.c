@@ -195,7 +195,7 @@ int main(int argc , char *argv[])
                     strcat(mes, buffer);            // Reads buffer into mes
                     printf("Player[%i] -> typed: %s", i, mes);
 
-                    if (!(strncmp(mes, "1\n", strlen(mes)) == 0)) { //Entering Single Player Game
+                    if ((strncmp(mes, "1\n", strlen(mes)) == 0)) { //Entering Single Player Game
                         while(1){ // Keep State (Don't Really Need)
                             printf("Player[%i]: Entering Single Player Game\n", i);
                             printf("Child[%d] Parent[%d]\n", getpid(), getppid());
@@ -293,7 +293,7 @@ int main(int argc , char *argv[])
                         }
                     }
 
-                    if (!(strncmp(mes, "2\n", strlen(mes)) == 0)) { //Entering Single Player Game
+                    if ((strncmp(mes, "2\n", strlen(mes)) == 0)) { //Entering Single Player Game
                         while(1){
                             printf("Player[%i]: Entering Multi-Player Player Game\n", i);
                             printf("Child[%d] Parent[%d]\n", getpid(), getppid());
