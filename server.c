@@ -5,10 +5,10 @@
 
 void server(struct user plr, struct wordList validWords){
     //Allocate array to hold 10 file names
-    char **fileNames = malloc(sizeof(int) * 11);
+    char **fileNames = malloc(sizeof(int) * 50);
     //Allocate each cell in filesnames array to hold 21 characters
     for(int i = 0; i < 11; i++){
-        fileNames[i] = malloc( 21 * sizeof *fileNames[i] );
+        fileNames[i] = malloc( 50 * sizeof *fileNames[i] );
     }
     //Initialize all filenames
     strcpy(fileNames[0], "./input/input_01.txt");
