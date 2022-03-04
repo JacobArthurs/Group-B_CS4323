@@ -21,13 +21,13 @@ void server(struct user plr, struct wordList validWords){
     strcpy(fileNames[7], "./input/input_08.txt");
     strcpy(fileNames[8], "./input/input_09.txt");
     strcpy(fileNames[9], "./input/input_10.txt");
-    strcpy(filenames[10], "./input/dictionary.txt");
+    strcpy(fileNames[10], "./input/dictionary.txt");
     //select a random index (other than dictionary.txt index)
     srand(time(NULL));
     int randomIndex = rand() % 9;
     //open random file
     FILE *fptr = fopen(fileNames[randomIndex], "r");
-    FILE *fptr_dict = fopen(filenames[10], "r");
+    FILE *fptr_dict = fopen(fileNames[10], "r");
     
     //disolve filenames memory
     free(fileNames);
