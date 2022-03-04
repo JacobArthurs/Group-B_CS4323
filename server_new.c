@@ -245,7 +245,8 @@ int main(int argc , char *argv[])
                                         input = plr[player].currentWord;
                                         break;
                                     }
-                                    input = recv(plr[player].clientpid,buffer,1024,0);
+                                    recv(plr[player].clientpid,buffer,1024,0);
+                                    strcpy(input, buffer);
                                     if(strncmp(input, "Pass", strlen(input)) == 0)){
                                         plr[player].skipCount = plr[player].skipCount + 1;
                                         plr[player].validWords = 0;
