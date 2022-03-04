@@ -3,7 +3,9 @@
 // miguep@okstate.edu
 // 2-27-2022
 // All word processing functionality required of the game in the description document is addressed within this file. Will be called from
-// server and client files during execution of the game. I also contributed to implementation in separate files and debugging.
+// server and client files during execution of the game. I also contributed to implementation in separate files and debugging. Also note the
+// start_game() method at the bottom of the file served as a model to develop the general flow of the game as it determined we had all of the
+// right methods and variables required to get the game to work as delineated in the assignment document.
 
 #include <stdio.h>
 #include <stdlib.h>
