@@ -46,7 +46,7 @@ void server(struct user *plr, struct wordList *validWords){
     find_valid_words(&validWords, fptr_dict, letters, false);      // add all valid words in the dictionary file to validWords list
     
     // fill in user randomLetters
-    plr->randomAlphabets = malloc(7);
+    plr->*randomAlphabets = malloc(7);
     strcpy(plr->randomAlphabets, letters);
     
     // printf("Available letters: %s\n", letters);
@@ -54,5 +54,5 @@ void server(struct user *plr, struct wordList *validWords){
     //print random beginning letter to slected player
     randomIndex = rand() % 8;
     printf("Starting letter: %c", letters[randomIndex]);
-    strcpy(plr.currentWord, letters[randomIndex]);
+    strcpy(plr->currentWord, letters[randomIndex]);
 }

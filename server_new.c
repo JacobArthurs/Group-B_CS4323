@@ -221,9 +221,10 @@ int main(int argc , char *argv[])
                                 single_player = single;
                             }
                             char *singlegame_message = "SENT WITH Single Player Port\n\0"; // Message Pass to Both Players
+                           // plr[player] = malloc(1000);
                             send(client_socket_init[single_player], singlegame_message, strlen(singlegame_message), 0);
-                            fname(plr[player].clientpid);
-                            recv(plr[player].clientpid,buffer,1024,0);
+                            fname(plr[player].clientpid);                       //ask the player to fill in their name
+                            recv(plr[player].clientpid,buffer,1024,0);          //and country
                             strcpy(plr[player].firstName,buffer);
                             lname(plr[player].clientpid);
                             recv(plr[player].clientpid,buffer,1024,0);
@@ -231,56 +232,56 @@ int main(int argc , char *argv[])
                             cnty(plr[player].clientpid);
                             recv(plr[player].clientpid,buffer,1024,0);
                             strcpy(plr[player].country,buffer);
-                            server(plr[player], validWords[player]);
+                            server(&plr[player], &validWords[player]);   //randomly select a input file
                             while(plr[player].skipCount < 3){//client always goes first in singleplayer
-                                if(plr[player].skipCount == 2){
+                                if(plr[player].skipCount == 2){//check if the current word was cleared so that
                                     strcpy(plr[player].currentWord, "");
                                 }
                                 print_game_status(plr[player]);//ask about later
                                 char input[20];
-                                while(true){//need to adjust this so that it only waits 4 minutes
-                                    if (plr[player].validWords == 3){
+                                while(true){//client turn
+                                    if (plr[player].validWords == 3){//skip turn
                                         plr[player].skipCount = plr[player].skipCount + 1;
                                         plr[player].validWords = 0;
                                         strcpy(input, plr[player].currentWord);
                                         break;
                                     }
-                                    recv(plr[player].clientpid,buffer,1024,0);
+                                    recv(plr[player].clientpid,buffer,1024,0);//ask for input
                                     strcpy(input, buffer);
-                                    if(strncmp(input, "Pass", strlen(input)) == 0){
+                                    if(strncmp(input, "Pass", strlen(input)) == 0){//pass from client
                                         plr[player].skipCount = plr[player].skipCount + 1;
                                         plr[player].validWords = 0;
                                         strcpy(input, plr[player].currentWord);
                                         break;
                                     } else if(is_word_valid(input, plr[player].randomAlphabets, plr[player],
-                                            &validWords[player], false, plr[player].currentWord[strlen(plr[player].currentWord)-1])){
+                                            &validWords[player], false, plr[player].currentWord[strlen(plr[player].currentWord)-1])){//valid word inputted
                                         register_points(plr[player], input, &validWords[player]);
                                         register_word(input,&plr[player]);
                                         strcpy(plr[player].currentWord, input);//input
                                         plr[player].skipCount = 0;
                                         plr[player].validWords = 0;
                                         break;
-                                    } else if(has_been_used(input, plr[player])){
+                                    } else if(has_been_used(input, plr[player])){//inputted used word
                                         strcpy(input, "used");
                                         register_points(plr[player], input, &validWords[player]);
                                         plr[player].validWords = plr[player].validWords + 1;
                                         strcpy(input, plr[player].currentWord);
-                                    } else{
+                                    } else{//inputted invalid word
                                         strcpy(input, "invalid");
                                         register_points(plr[player], input, &validWords[player]);
                                         plr[player].validWords = plr[player].validWords + 1;
                                         strcpy(input, plr[player].currentWord);
                                     }
                                 }
-                                if(plr[player].skipCount == 3){
+                                if(plr[player].skipCount == 3){//end game
                                     break;
-                                } else if(plr[player].skipCount == 2){
+                                } else if(plr[player].skipCount == 2){//clear current word
                                     strcpy(plr[player].currentWord, "");
                                     strcpy(input, "");
                                 }
-                                generate_oppponent_word(plr[player], plr[player].currentWord, &validWords[player]);//need to write gameOpponent
+                                generate_oppponent_word(plr[player], plr[player].currentWord, &validWords[player]);//server opponent picks word
                                 
-                                if((strncmp(plr[player].currentWord, input, strlen(input)) == 0)){
+                                if((strncmp(plr[player].currentWord, input, strlen(input)) == 0)){//if server picked a word
                                     register_points(plr[player], plr[player].currentWord, &validWords[player]);
                                     register_word(plr[player].currentWord, &plr[player]);
                                     plr[player].skipCount = 0;
@@ -288,15 +289,18 @@ int main(int argc , char *argv[])
                                     plr[player].skipCount = plr[player].skipCount + 1;
                                 }
                             }
-                            singlePlayerScoreboard(plr[player]);
+                            singlePlayerScoreboard(plr[player]);//print scoreboard
                             break;
                         }
                     }
 
-                    if ((strncmp(mes, "2\n", strlen(mes)) == 0)) { //Entering Single Player Game
+                    if ((strncmp(mes, "2\n", strlen(mes)) == 0)) { //Entering Multi Player Game
                         while(1){
                             printf("Player[%i]: Entering Multi-Player Player Game\n", i);
                             printf("Child[%d] Parent[%d]\n", getpid(), getppid());
+                            int x;
+                            int y;
+                            int z;
                             message = "Entering Multi-Player Game\n\0";
                             memset(mes, 0, strlen(mes));                                        
                             strcat(mes, message);
@@ -327,7 +331,79 @@ int main(int argc , char *argv[])
                                 send(client_socket_init[first_player], test_message, strlen(test_message), 0); // Send to Player One
                                 send(client_socket_init[second_player], test_message, strlen(test_message), 0); // Send to Player Two
                                 // Starting Game Here
+                                x = 1;
+                                y = 2;
+                                plr[1].clientpid = client_socket_init[first_player];
+                                plr[2].clientpid = client_socket_init[second_player];
+                                fname(plr[x].clientpid);                    //ask the two players to input their
+                                recv(plr[x].clientpid,buffer,1024,0);       //name and their country
+                                strcpy(plr[x].firstName,buffer);
+                                lname(plr[x].clientpid);
+                                recv(plr[x].clientpid,buffer,1024,0);
+                                strcpy(plr[x].lastName,buffer);
+                                cnty(plr[x].clientpid);
+                                recv(plr[x].clientpid,buffer,1024,0);
+                                strcpy(plr[x].country,buffer);
+                                fname(plr[y].clientpid);
+                                recv(plr[y].clientpid,buffer,1024,0);
+                                strcpy(plr[y].firstName,buffer);
+                                lname(plr[y].clientpid);
+                                recv(plr[y].clientpid,buffer,1024,0);
+                                strcpy(plr[y].lastName,buffer);
+                                cnty(plr[y].clientpid);
+                                recv(plr[y].clientpid,buffer,1024,0);
+                                strcpy(plr[y].country,buffer);
+                                server(&plr[x], &validWords[x]);
+                                strcpy(plr[y].randomAlphabets, plr[x].randomAlphabets);
+                                strcpy(plr[y].currentWord, plr[x].currentWord);
+                                while(plr[1].skipCount < 3){//client always goes first in singleplayer
+                                    if(plr[1].skipCount == 2){
+                                        strcpy(plr[x].currentWord, "");
+                                    }
+                                    print_game_status(plr[x]);//ask about later
+                                    char input[20];
+                                    while(true){ //players turn
+                                        if (plr[x].validWords == 3){//end of turn due to too many invalid answers
+                                            plr[1].skipCount = plr[1].skipCount + 1;
+                                            plr[x].validWords = 0;
+                                            break;
+                                        }
+                                        recv(plr[x].clientpid,buffer,1024,0);//recieve input from turn player
+                                        strcpy(input, buffer);
+                                        if(strncmp(input, "Pass", strlen(input)) == 0){//pass condition
+                                            plr[1].skipCount = plr[1].skipCount + 1;
+                                            plr[x].validWords = 0;
+                                            break;
+                                        } else if(is_word_valid(input, plr[x].randomAlphabets, plr[x],
+                                                &validWords[1], false, plr[x].currentWord[strlen(plr[x].currentWord)-1])){//valid answer condition
+                                            register_points(plr[x], input, &validWords[1]);
+                                            plr[y].opponentScore = plr[x].score;
+                                            register_word(input,&plr[x]);
+                                            register_word(input,&plr[y]);
+                                            strcpy(plr[x].currentWord, input);//input
+                                            strcpy(plr[y].currentWord, plr[x].currentWord);
+                                            plr[1].skipCount = 0;
+                                            plr[x].validWords = 0;
+                                            break;
+                                        } else if(has_been_used(input, plr[x])){// used input condition
+                                            strcpy(input, "used");
+                                            register_points(plr[x], input, &validWords[1]);
+                                            plr[y].opponentScore = plr[x].score;
+                                            plr[x].validWords = plr[x].validWords + 1;
+                                        } else{//invalid input condition
+                                            strcpy(input, "invalid");
+                                            register_points(plr[x], input, &validWords[x]);
+                                            plr[y].opponentScore = plr[x].score;
+                                            plr[x].validWords = plr[x].validWords + 1;
+                                        }
+                                    }
+                                    z = x;
+                                    x = y;
+                                    y = z;  
+                                }
                             }
+                            multiplayerScoreboard(plr[1]);//print out the game
+                            multiplayerScoreboard(plr[2]);
                             break;
                         }
                     }
