@@ -9,7 +9,7 @@
 #include <time.h>
 #include <stdbool.h>
 
-typedef struct user {
+struct user {
     char randomAlphabets[7];
     char wordList[20][100]; 
     char currentWord[20];

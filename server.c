@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "player.c"
-#include "word_processing.c"
+
 
 void server(struct user plr, struct wordList validWords){
     //Allocate array to hold 10 file names

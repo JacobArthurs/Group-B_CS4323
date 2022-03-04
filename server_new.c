@@ -14,10 +14,10 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <sys/time.h> 
-#include "word_processing.c"
-#include "scoreboard.c"
 #include "player.c"
+#include "word_processing.c"
 #include "server.c"
+#include "scoreboard.c"
 
   
 #define TRUE   1
