@@ -46,7 +46,7 @@ void server(struct user plr, struct wordList validWords){
     find_valid_words(&validWords, fptr_dict, letters, false);      // add all valid words in the dictionary file to validWords list
     
     // fill in user randomLetters
-    plr.randomAlphabets = letters;
+    strcpy(plr.randomAlphabets, letters);
     
     // printf("Available letters: %s\n", letters);
 
